@@ -1,0 +1,72 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate core runtime syntax
+        run: |
+          python3 -m py_compile serve.py tools/workspace_codec.py
+
+      - name: Resolve version and tag
+        id: ver
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            TAG="${GITHUB_REF_NAME}"
+            VER="${TAG#v}"
+          else
+            VER="$(grep -m1 '"version"' .claude-plugin/plugin.json | sed -E 's/.*"version" *: *"([^"]+)".*/\1/')"
+            TAG="v${VER}"
+          fi
+          echo "ver=$VER" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Package core bundle
+        run: |
+          mkdir -p dist
+          STAGE="$(mktemp -d)"
+          mkdir -p "$STAGE/greenroom-core"
+          cp README.md README.zh-CN.md LICENSE OPEN_CORE.md TRADEMARK.md CONTRIBUTING.md CHANGELOG.md "$STAGE/greenroom-core/"
+          cp serve.py start.sh Makefile .env.example "$STAGE/greenroom-core/"
+          cp -R .claude-plugin skills docs examples tools licenses "$STAGE/greenroom-core/"
+          ( cd "$STAGE" && zip -qr "$GITHUB_WORKSPACE/dist/greenroom-core.zip" greenroom-core )
+          ls -lh dist
+
+      - name: Extract release notes
+        run: |
+          awk -v ver="## v${{ steps.ver.outputs.ver }}" '
+            $0 ~ "^" ver {f=1}
+            f && /^## v/ && $0 !~ ver {exit}
+            f
+          ' CHANGELOG.md > dist/notes.md
+          if [ ! -s dist/notes.md ]; then
+            echo "greenroom core ${{ steps.ver.outputs.tag }}" > dist/notes.md
+          fi
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${{ steps.ver.outputs.tag }}"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" dist/greenroom-core.zip --clobber
+            gh release edit "$TAG" --title "greenroom core $TAG" --notes-file dist/notes.md
+          else
+            gh release create "$TAG" dist/greenroom-core.zip \
+              --title "greenroom core $TAG" \
+              --notes-file dist/notes.md
+          fi

@@ -1,0 +1,28 @@
+{
+  "name": "greenroom",
+  "owner": {
+    "name": "Yunyue Li",
+    "url": "https://github.com/YunyueLi"
+  },
+  "metadata": {
+    "description": "Greenroom · 候场 - MIT greenroom core for interview preparation workspaces",
+    "version": "0.39.0"
+  },
+  "plugins": [
+    {
+      "name": "greenroom",
+      "source": "./",
+      "description": "MIT greenroom core: job intel, story bank, verbatim scripts, industry briefs, mock interviews, debriefs. 面试准备 core：岗位情报 / 经历库 / 逐字稿 / 行业通识 / 模拟面试 / 面后复盘。",
+      "version": "0.39.0",
+      "author": {
+        "name": "Yunyue Li"
+      },
+      "license": "MIT",
+      "keywords": [
+        "interview",
+        "interview-prep",
+        "job-search"
+      ]
+    }
+  ]
+}

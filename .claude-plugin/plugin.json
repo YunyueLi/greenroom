@@ -1,0 +1,20 @@
+{
+  "name": "greenroom",
+  "displayName": "Greenroom · 候场",
+  "version": "0.39.0",
+  "description": "MIT-licensed greenroom core: workspace contract, local runtime, and 6 interview-prep skills.",
+  "author": {
+    "name": "Yunyue Li",
+    "url": "https://github.com/YunyueLi"
+  },
+  "homepage": "https://github.com/YunyueLi/greenroom",
+  "repository": "https://github.com/YunyueLi/greenroom",
+  "license": "MIT",
+  "keywords": [
+    "interview",
+    "interview-prep",
+    "job-search",
+    "career",
+    "mock-interview"
+  ]
+}

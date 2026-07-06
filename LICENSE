@@ -1,0 +1,54 @@
+greenroom License Policy
+
+Copyright (c) 2026 Yunyue Li.
+
+greenroom is distributed as an open-core project. Unless a file states a
+different license, the following terms apply.
+
+1. Open Core: MIT License
+
+The following components are licensed under the MIT License in
+licenses/MIT.txt:
+
+- skills/
+- docs/workspace-spec.md
+- docs/realtime-bridge.md
+- serve.py
+- examples/demo-workspace/
+- tools/workspace_codec.py
+- files that explicitly state "MIT License" or "license: MIT"
+
+These components define the portable workspace contract, reference local
+runtime, and agent skills needed to generate and read a greenroom workspace.
+
+2. Product Layer: All Rights Reserved
+
+The official product layer is proprietary unless a separate written license
+says otherwise. This includes, without limitation:
+
+- hosted web app UI and product flows
+- public landing page implementation and product marketing pages
+- Cloudflare Worker API and hosted service configuration
+- desktop app
+- brand assets, icons, wordmarks, Open Graph images, and other product visual assets
+- hosted account, sync, metering, model proxy, and cloud service code
+- curated role encyclopedia, playbook, and product knowledge content
+
+No license is granted to copy, modify, distribute, host, sell, or create a
+competing hosted product from the Product Layer.
+
+3. Historical MIT releases
+
+Copies obtained from earlier commits or releases that were explicitly
+distributed under the MIT License remain governed by the MIT License for those
+copies. Future versions are governed by this license policy.
+
+4. Trademarks and brand assets
+
+The greenroom name, logo, wordmark, domain, visual identity, and product look
+and feel are reserved brand assets. See TRADEMARK.md.
+
+5. Questions
+
+For commercial use, hosted deployments, product-layer licensing, or brand
+permission, contact the project owner.

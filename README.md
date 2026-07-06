@@ -23,13 +23,6 @@ contract and agent skills. The official hosted product lives separately.
 | `examples/demo-workspace/` | Fictional demo workspace | MIT core |
 | `tools/workspace_codec.py` | Workspace helper utilities | MIT core |
 
-## What Is Not Public
-
-The official product layer is proprietary: hosted web app, account sync,
-Cloudflare Worker API, desktop app, metering, curated role knowledge, premium
-content, brand assets, product UI/UX, and visual identity. See
-[LICENSE](LICENSE), [OPEN_CORE.md](OPEN_CORE.md), and [TRADEMARK.md](TRADEMARK.md).
-
 ## Install Skills
 
 ```bash
@@ -84,6 +77,5 @@ access, and curated knowledge on top of the same core contract.
 greenroom is open core.
 
 - Core files are MIT-licensed. See [licenses/MIT.txt](licenses/MIT.txt).
-- Product-layer code, hosted service implementation, curated knowledge,
-  premium content, brand assets, and product UI/UX are proprietary unless a
-  file explicitly says otherwise.
+- The official hosted product and brand are governed separately. See
+  [OPEN_CORE.md](OPEN_CORE.md) and [TRADEMARK.md](TRADEMARK.md).

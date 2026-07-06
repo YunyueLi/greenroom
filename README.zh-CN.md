@@ -20,10 +20,6 @@ greenroom core 把简历和目标岗位转成一个本地 Markdown 工作台：�
 | `examples/demo-workspace/` | 虚构示例工作台 | MIT core |
 | `tools/workspace_codec.py` | 工作台辅助工具 | MIT core |
 
-## 公开仓不包含什么
-
-官方产品层保留所有权利：托管 Web App、账号同步、Cloudflare Worker API、桌面端、额度计量、精选岗位知识、高级内容、品牌资产、产品 UI/UX 和视觉识别。详见 [LICENSE](LICENSE)、[OPEN_CORE.md](OPEN_CORE.md) 和 [TRADEMARK.md](TRADEMARK.md)。
-
 ## 安装 skills
 
 ```bash
@@ -75,4 +71,4 @@ python3 serve.py ~/my-greenroom
 greenroom 是 open-core 项目。
 
 - Core 文件使用 MIT。见 [licenses/MIT.txt](licenses/MIT.txt)。
-- 产品层代码、托管服务实现、精选知识、高级内容、品牌资产和产品 UI/UX 保留所有权利，除非文件明确另行授权。
+- 官方托管产品和品牌单独治理。见 [OPEN_CORE.md](OPEN_CORE.md) 和 [TRADEMARK.md](TRADEMARK.md)。

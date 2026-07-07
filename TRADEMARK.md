@@ -8,9 +8,9 @@ Li.
 
 You may:
 
-- refer to the open-core project as "greenroom core"
-- state that a tool is "compatible with greenroom core" if it implements the
-  public workspace contract
+- refer to the open-source project as "greenroom Community Edition"
+- state that a tool is "compatible with the greenroom workspace format" if it
+  implements the public workspace contract
 - link to the official project or documentation
 - use the name in factual, non-misleading technical discussion
 
@@ -29,7 +29,7 @@ You may not, without written permission:
 ## Forks and Compatible Tools
 
 Forks and compatible tools should use their own names and visual identity. A
-clear phrase such as "compatible with greenroom core" is acceptable; presenting
-the fork as "greenroom" is not.
+clear phrase such as "compatible with the greenroom workspace format" is
+acceptable; presenting the fork as the official greenroom product is not.
 
 For brand permission, contact the project owner.

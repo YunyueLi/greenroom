@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""greenroom core 本地参考运行时：工作台直连 + 实时提词 + 模拟面试，单文件标准库。
+"""greenroom 本地服务：控制台 + 工作台直连 + 实时提词 + 模拟面试，单文件标准库。
 
     python3 serve.py ~/my-greenroom        # 挂载工作台（jobs/ 下的岗位自动成为提词与模拟面试的选项）
-    python3 serve.py                       # 只启动 core API
+    python3 serve.py                       # 不挂载 = 纯控制台（页内点「看示例」）
 
-无 API key 时只提供工作台读取；要解锁「实时助手」与「模拟面试」，在工作台根目录（或本脚本目录）放 .env：
+无 API key 时是纯阅读服务；要解锁「实时助手」与「模拟面试」，在工作台根目录（或本脚本目录）放 .env：
 
     MODEL_API_KEY=sk-xxxx                  # 必填（兼容旧名 DEEPSEEK_API_KEY / OPENAI_API_KEY）
     MODEL_API_BASE=https://api.deepseek.com    # 可选：任意 OpenAI 兼容接口（OpenAI / DeepSeek / Ollama…）
     MODEL_NAME=deepseek-v4-flash               # 可选：模型名
 
 端点（协议见 docs/realtime-bridge.md）：
-    /                  core 运行时状态页
+    /app               控制台
     /workspace/bundle  工作台 .md 全文 + 资产清单（实时读盘）
     /workspace/file    单文件取回（?path=，pdf 等二进制）
     /config            personas（自动扫 jobs/）+ 模型与 key 状态
@@ -35,40 +35,10 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 PORT = 8787
 ROOT = Path(__file__).resolve().parent
 APP = ROOT / "app" / "greenroom.html"
-HAS_APP = APP.exists()
 WORKSPACE = Path(sys.argv[1]).expanduser().resolve() if len(sys.argv) > 1 else None
 
 DEFAULT_API_BASE = "https://api.deepseek.com"
 DEFAULT_MODEL = "deepseek-v4-flash"
-
-
-CORE_HOME = """<!doctype html>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>greenroom core runtime</title>
-<style>
-body{margin:0;font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f7f5ef;color:#151511}
-main{max-width:760px;margin:12vh auto;padding:0 24px}
-h1{font-size:40px;line-height:1.05;margin:0 0 14px}
-p{color:#5c5850;margin:0 0 24px}
-code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#fff;border:1px solid #dedbd2;border-radius:6px;padding:2px 6px}
-ul{padding-left:20px}
-li{margin:8px 0}
-a{color:#0b3b29}
-</style>
-<main>
-  <h1>greenroom core runtime</h1>
-  <p>The public core serves the workspace contract and local model bridge. The official hosted product UI is maintained separately.</p>
-  <ul>
-    <li><code>GET /config</code> runtime configuration and discovered jobs</li>
-    <li><code>GET /workspace/bundle</code> workspace Markdown bundle</li>
-    <li><code>POST /api/answer</code> live answer bridge</li>
-    <li><code>POST /api/mock</code> mock interview bridge</li>
-    <li><code>POST /api/setup</code> workspace bootstrap helper</li>
-  </ul>
-  <p>Docs: <a href="https://github.com/YunyueLi/greenroom/blob/main/docs/workspace-spec.md">workspace spec</a> · <a href="https://greenroom.ungetsu.net/">official product</a></p>
-</main>
-""".encode("utf-8")
 
 
 # ---------------- 配置（.env：工作台根目录优先，其次脚本目录） ----------------
@@ -630,12 +600,11 @@ class Handler(BaseHTTPRequestHandler):
         url = urlparse(self.path)
         route = url.path
         if route == "/":
-            self._send(200, CORE_HOME, "text/html; charset=utf-8")
+            self.send_response(302)
+            self.send_header("Location", "/app")
+            self.end_headers()
         elif route == "/app":
-            if HAS_APP:
-                self._send(200, APP.read_bytes(), "text/html; charset=utf-8")
-            else:
-                self._send(404, b"official product app is not part of greenroom core")
+            self._send(200, APP.read_bytes(), "text/html; charset=utf-8")
         elif route == "/config":
             cfg = {"has_key": bool(get_api_key()), "model": get_model(), "personas": list_personas()}
             self._send(200, json.dumps(cfg, ensure_ascii=False).encode("utf-8"),
@@ -696,14 +665,14 @@ class Handler(BaseHTTPRequestHandler):
         return key
 
     def _byok_key(self):
-        """BYOK：优先用请求头 X-Greenroom-Key（兼容客户端本地保存），否则回退 .env。
+        """BYOK：优先用请求头 X-Greenroom-Key（控制台「设置」面板填的，仅存浏览器本机），否则回退 .env。
         占位假 key 视作未配置。返回 (key, model)；无 key 时已发 401、返回 (None, None)。"""
         hk = (self.headers.get("X-Greenroom-Key") or "").strip()
         if hk == "sk-your-own-key-here":
             hk = ""
         key = hk or get_api_key()
         if not key:
-            self._send(401, "未配置模型 key：在 .env 写 MODEL_API_KEY=sk-xxx，或让兼容客户端传 X-Greenroom-Key。".encode("utf-8"))
+            self._send(401, "未配置模型 key：点控制台右上角「设置」（齿轮）填入你的 key（仅存本机），或在 .env 写 MODEL_API_KEY=sk-xxx。".encode("utf-8"))
             return None, None
         model = (self.headers.get("X-Greenroom-Model") or "").strip() or get_model()
         return key, model
@@ -945,7 +914,7 @@ class Handler(BaseHTTPRequestHandler):
                         continue
                 if saved:
                     emit(f"##STEP 已存入 {saved} 个附件（jobs/{slug}/attachments/）")
-            # 时间线首条（## 时间线 区块：兼容客户端可渲染，后续轮次手动或 debrief 回写）
+            # 时间线首条（## 时间线 区块：控制台岗位页渲染，后续轮次手动或 debrief 回写）
             jp = WORKSPACE / "jobs" / slug / "job.md"
             today_full = __import__("datetime").date.today().strftime("%Y.%m.%d")
             try:
@@ -1022,18 +991,16 @@ class Handler(BaseHTTPRequestHandler):
 
 def main():
     server = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
-    ws = str(WORKSPACE) if WORKSPACE else "（未挂载工作台）"
+    ws = str(WORKSPACE) if WORKSPACE else "（未挂载，控制台内点「看示例」或拖文件夹）"
     key_status = "已配置 ✓（实时助手 / 模拟面试可用）" if get_api_key() else "未配置（纯阅读模式；.env 写 MODEL_API_KEY 解锁提词与模拟面试）"
     personas = list_personas()
-    print("greenroom core runtime 已启动")
-    print(f"  状态页   http://127.0.0.1:{PORT}/")
-    if HAS_APP:
-        print(f"  兼容 app http://127.0.0.1:{PORT}/app")
+    print("greenroom 已启动")
+    print(f"  控制台   http://127.0.0.1:{PORT}/app")
     print(f"  工作台   {ws}")
     print(f"  岗位     {('、'.join(personas.values())) if personas else '（无 jobs/ 目录）'}")
     print(f"  模型     {get_model()} · key {key_status}")
     print("  关闭     Control + C")
-    webbrowser.open(f"http://127.0.0.1:{PORT}/")
+    webbrowser.open(f"http://127.0.0.1:{PORT}/app")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

@@ -22,11 +22,13 @@ Greenroom 是赛前准备工具。如果你另外在用实时提词类工具（�
 
 逐字稿本身已经把每个数字的口径和出处写定（见 `docs/workspace-spec.md` 的 script.md 契约），所以提词器只要严守「只用稿里出现过的」这一条，就不会当场说出一个没准备过的数字。
 
-## 取数方式
+## 两种取数方式
 
-**方式一：HTTP 直读工作台（推荐自建工具用）**。后端实现 `GET /workspace/bundle` 与 `GET /workspace/file?path=`（契约见 `docs/workspace-spec.md`「工具取数约定」），同一个 bundle 足够提词后端组装上下文。仓库自带的 `serve.py` 是参考实现。
+**方式一：控制台导出（零开发）**。打开 `app/greenroom.html` → 进入岗位 → 「导出实时提词上下文」。得到一份 `realtime-context-<slug>.md`，内容就是上面契约里输出规则 + 逐字稿两段，粘进任何提词工具的自定义 prompt / 知识库即可。
 
-**方式二：程序直读工作台文件（伪代码）**：
+**方式二：HTTP 直读工作台（推荐自建工具用）**。后端实现 `GET /workspace/bundle` 与 `GET /workspace/file?path=`（契约见 `docs/workspace-spec.md`「工具取数约定」），控制台即可自动直连、免选文件夹；同一个 bundle 也够提词后端组装上下文。仓库自带的 `serve.py` 是参考实现。
+
+**方式三：程序直读工作台文件（伪代码）**：
 
 ```python
 from pathlib import Path
@@ -41,9 +43,9 @@ def build_context(slug: str) -> str:
 
 岗位切换 = 换 slug 重读，不需要在工具里硬编码任何一套材料。逐字稿解析规则见 `docs/workspace-spec.md` 的 script.md 契约。
 
-官方托管产品可能提供一键导出或可视化配置，但这些 UI 属于产品层，不在公开 core 仓库内。
+## 控制台内置实时助手与后端协议
 
-## 后端协议
+`app/greenroom.html` 的「实时助手」视图是一个通用提词客户端：双引擎转写（本地 FunASR WebSocket 优先、回退 Chrome Web Speech）、手动/静音自动触发、流式渲染（【这么起】起手句高亮、加粗要点、⚠️ 口径行）、追加快捷指令、手动打字兜底。它连接一个本地后端（默认同源，其次 `http://127.0.0.1:8765`，可在界面里改）。
 
 **仓库自带参考实现：`serve.py`**——挂载工作台并在 `.env` 配好 `MODEL_API_KEY` 即全功能（persona 自动扫 `jobs/` 目录，逐字稿/JD/情报全部按 workspace-spec 契约实时读盘；`MODEL_API_BASE`/`MODEL_NAME` 支持任意 OpenAI 兼容接口）。自建后端实现以下三个接口即可：
 
@@ -75,7 +77,7 @@ POST /api/setup         # 不依赖 Claude 的工作台生成（serve.py 参考�
 
 后端责任：按本文上方契约从工作台组装 system prompt（输出规则 + 逐字稿），代理模型流式接口、藏 key。响应头带 `Access-Control-Allow-Origin: *`；建议同时实现 `OPTIONS`（204 + CORS 头）兼容带 JSON header 的客户端。转写若用本地 FunASR：WebSocket 端口 8766，客户端发 `start` 后推 16kHz 单声道 Int16 PCM，服务端回 `{"text": "增量文本"}`。
 
-客户端侧建议：实时助手视图保持视口内布局，提词卡内部滚动，流式自动跟随且用户上翻时暂停跟随；转写区与操作条固定不被顶走；输入设备可选，回声消除/降噪/自动增益应显式可控；需要悬浮窗时可用 Document Picture-in-Picture 把问题和提词镜像到一个置顶小窗（Chrome 116+）。
+客户端侧（v0.4.0 起）：实时助手视图为视口内布局——提词卡内部滚动、流式自动跟随（用户上翻即暂停跟随），转写区与操作条固定不被顶走；「输入设备」可选（deviceId 透传 FunASR 采集链，回声消除/降噪/自动增益显式关闭，配合 BlackHole 一类环回设备），带电平实测按钮；「悬浮窗」用 Document Picture-in-Picture 把问题+提词镜像到一个置顶小窗（可拖到摄像头正下方，Chrome 116+）。
 
 ## 实现建议（来自一个真实的自建提词器）
 

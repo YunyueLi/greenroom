@@ -1,0 +1,8 @@
+/app/greenroom
+  Cache-Control: no-cache
+
+/app/greenroom.html
+  Cache-Control: no-cache
+
+/404.html
+  Cache-Control: no-cache

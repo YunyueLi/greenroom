@@ -29,7 +29,7 @@ metadata:
 | 4 | industry-brief | `library/<行业-岗位>-通识.md`（行业与岗位参考阅读） |
 | 5 | interview-script | `jobs/<slug>/script.md`（可朗读逐字稿） |
 
-收尾：汇报生成清单 + 提示用户可用官方 greenroom 产品、桌面端或任何兼容客户端阅读；也可以用 `python3 serve.py <workspace>` 启动本地 core API。建议面试前跑一次 mock-interview、面试后 24 小时内跑 debrief。这套工作台同时是实时提词后端的取数源（逐字稿 + 调研，见 docs/realtime-bridge.md）。
+收尾：汇报生成清单 + 提示打开控制台 `app/greenroom.html` 阅读；建议面试前跑一次 mock-interview、面试后 24 小时内跑 debrief。这套工作台同时是实时提词后端的取数源（逐字稿 + 调研，见 docs/realtime-bridge.md）。
 
 ## 六步方法（单步路由用）
 

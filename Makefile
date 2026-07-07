@@ -1,8 +1,8 @@
-# greenroom core — 常用命令。`make` 或 `make dev` = 启动本地参考运行时。
+# greenroom — 常用命令。`make` 或 `make dev` = 一键本地运行。
 .DEFAULT_GOAL := dev
 .PHONY: dev serve help
 
-dev:   ## 启动 core runtime（= ./start.sh）
+dev:   ## 一键本地运行：控制台 + 模型代理 + 自动开浏览器（= ./start.sh）
 	@./start.sh
 
 serve: ## 直接起后端（可带工作台目录：make serve DIR=~/my-greenroom）

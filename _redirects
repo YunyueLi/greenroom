@@ -1,0 +1,12 @@
+/ /app/greenroom 200
+/account /app/greenroom 200
+/overview /app/greenroom 200
+/resume /app/greenroom 200
+/stories /app/greenroom 200
+/materials /app/greenroom 200
+/roles /app/greenroom 200
+/live /app/greenroom 200
+/mock /app/greenroom 200
+/method /app/greenroom 200
+/setup /app/greenroom 200
+/jobs/* /app/greenroom 200

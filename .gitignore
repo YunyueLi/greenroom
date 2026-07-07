@@ -3,6 +3,7 @@
 __pycache__/
 node_modules/
 .wrangler/
+dist/
 tools/.avatar-cache/
 # 真实工作台数据永远不进仓库
 my-greenroom/

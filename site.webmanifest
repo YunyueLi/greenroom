@@ -1,0 +1,14 @@
+{
+  "name": "greenroom",
+  "short_name": "greenroom",
+  "description": "AI-native interview prep system - generate the whole prep kit from a résumé and a JD, with account sync and a live copilot.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F0EEE9",
+  "theme_color": "#2F7D4F",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

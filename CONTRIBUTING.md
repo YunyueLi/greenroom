@@ -1,40 +1,45 @@
 # Contributing to greenroom
 
-greenroom is open core. Contributions are welcome in the core layer and are
-reviewed against the workspace contract, privacy rules, and product boundary.
+greenroom is an open-source Community Edition under AGPL-3.0. Contributions are
+welcome when they make the local-first interview-prep workflow more useful,
+portable, and trustworthy.
 
 ## Good Contribution Areas
 
-- `skills/`
-- `docs/workspace-spec.md`
-- `docs/realtime-bridge.md`
-- `serve.py`
-- `examples/demo-workspace/`
-- reference docs for building compatible tools
-
-Product-layer files such as `app/`, `worker/`, `workers/`, `desktop/`, `brand/`,
-and hosted service configuration are proprietary. Changes to those files may be
-closed or treated as product suggestions unless the maintainer has agreed to a
-separate contribution path.
+- `skills/` workflow improvements
+- `docs/workspace-spec.md` and compatible workspace tooling
+- `serve.py`, `start.sh`, and local runtime fixes
+- `app/greenroom.html` product-quality UI improvements
+- `knowledge/` community role encyclopedia entries based on public,
+  non-confidential sources
+- `examples/demo-workspace/` fictional demo data
+- `worker/` self-hosting and BYOK improvements
+- accessibility, performance, and cross-browser fixes
 
 ## License
 
-By contributing to an MIT-licensed core file, you agree to license your
-contribution under the MIT License. Contributions to files with another
-explicit license follow that file's license.
+By submitting a contribution, you agree that your contribution is licensed under
+the GNU Affero General Public License v3.0 unless a file explicitly states a
+different compatible license.
 
-You also confirm that you have the right to submit the contribution and that it
-does not include confidential employer, candidate, interview, or customer data.
+You also confirm that you have the right to submit the contribution.
 
 ## Privacy
 
 Do not commit real interview material, private resumes, salary information,
-company confidential information, user account data, API keys, or production
-logs. Demo data must stay fictional and consistent with
-`examples/demo-workspace/`.
+company confidential information, user account data, API keys, production logs,
+or screenshots containing personal data. Demo data must stay fictional and
+consistent with `examples/demo-workspace/`.
 
-## Product Boundary
+## Product Direction
 
-The open core should remain useful, portable, and local-first. The official
-hosted product adds account sync, metering, cloud model access, polished UI,
-desktop distribution, premium knowledge, and brand presentation.
+The public repository should remain useful on its own. Avoid changes that turn
+the community edition into a hollow shell that only works with the hosted
+service. Hosted greenroom may add managed accounts, cloud sync, hosted model
+access, and operational polish, but the open project should still be runnable
+and understandable locally.
+
+## Brand
+
+Forks and compatible tools should use their own names and visual identity. See
+`TRADEMARK.md` for the brand policy.

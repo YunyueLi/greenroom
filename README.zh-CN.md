@@ -1,74 +1,111 @@
-# greenroom core
+<div align="center">
 
-**用于生成可迁移面试准备工作台的开源底层。**
+<img src="icon-512.png" width="104" alt="greenroom">
 
-greenroom core 把简历和目标岗位转成一个本地 Markdown 工作台：岗位调研、经历卡、行业通识、可直接说出口的逐字稿、模拟面试和面后复盘。公开仓库只保留可复用的协议、skills、本地参考运行时和虚构示例；官方托管产品是单独维护的产品层。
+# greenroom · 候场
 
-[打开官方产品](https://greenroom.ungetsu.net/) ·
-[English README](README.md) ·
-[开源边界](OPEN_CORE.md) ·
-[工作台契约](docs/workspace-spec.md)
+**开源 AI 面试准备工作台。**
 
-## 公开仓包含什么
+*给它你的简历和目标 JD。greenroom 调研岗位，把真实经历整理成可复用的经历卡，写出能直接说出口的逐字稿，跑模拟面试，再把每一轮复盘喂给下一轮。*
 
-| 路径 | 作用 | 许可证 |
-| --- | --- | --- |
-| `skills/` | 面试准备流水线 Claude / agent skills | MIT core |
-| `docs/workspace-spec.md` | 可迁移 Markdown 工作台契约 | MIT core |
-| `docs/realtime-bridge.md` | 本地实时助手和模拟面试 API 契约 | MIT core |
-| `serve.py` | 工作台文件夹的本地参考运行时 | MIT core |
-| `examples/demo-workspace/` | 虚构示例工作台 | MIT core |
-| `tools/workspace_codec.py` | 工作台辅助工具 | MIT core |
+[![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-111.svg)](LICENSE)
+&nbsp;[![Release](https://img.shields.io/github/v/release/YunyueLi/greenroom?style=flat&color=111&label=Release)](https://github.com/YunyueLi/greenroom/releases)
+&nbsp;[![Stars](https://img.shields.io/github/stars/YunyueLi/greenroom?style=flat&color=111&label=Stars)](https://github.com/YunyueLi/greenroom)
+&nbsp;[![English](https://img.shields.io/badge/README-English-111.svg)](README.md)
 
-## 安装 skills
+### [打开官方托管版](https://greenroom.ungetsu.net/) · [本地运行](#本地运行) · [使用 skills](#使用-skills)
 
-```bash
-/plugin marketplace add YunyueLi/greenroom
-/plugin install greenroom@greenroom
+</div>
+
+---
+
+> 候场 - 演员上台之前等待和准备的房间。
+
+```
+简历 + 目标 JD -> 岗位调研   （公司、面试官、可能的考题）
+              -> 经历库     （你的事实，一份底座，按岗位换角度）
+              -> 行业通识   -> 逐字稿（按口语标准写）
+              -> 模拟面试   -> 教练报告
+              -> 复盘       -> 下一轮准备
 ```
 
-也可以把 `skills/*` 复制到任何兼容的 agent 环境。
+## 它做什么
+
+- **一次备齐全套材料。** 从简历和 JD 出发，生成候选人档案、经历库、岗位情报、行业通识、逐字稿、模拟面试和复盘。
+- **写能直接说出口的答案。** 不是要点提纲，而是第一人称口语稿；数字有出处，讲法按岗位换角度。
+- **保留可迁移工作台。** 所有材料按公开契约存成 Markdown，agent、本地工具和 Web App 读的是同一份工作台。
+- **包含产品界面。** 公开仓包含单文件 Web 控制台、本地后端、岗位百科种子、Cloudflare Worker 参考实现和示例工作台。
+- **本地优先。** 不登录也能跑。只有实时提词、生成和模拟面试需要你自己的 OpenAI 兼容模型 key。
+- **也有托管路径。** 官方 greenroom 提供账号、云同步、托管模型能力和持续维护的生产部署。
+
+## 本地运行
+
+```bash
+git clone https://github.com/YunyueLi/greenroom.git
+cd greenroom
+./start.sh
+```
+
+在控制台里打开示例，或挂载你自己的工作台：
+
+```bash
+./start.sh ~/my-greenroom
+```
+
+可选模型配置：
+
+```bash
+cp .env.example .env
+# 编辑 MODEL_API_KEY、MODEL_API_BASE、MODEL_NAME
+```
+
+阅读、浏览和岗位百科不需要 key。实时助手、模拟面试和一键生成工作台需要模型 key。
+
+## 使用 skills
+
+```bash
+# Claude Code 插件，版本化更新
+/plugin marketplace add YunyueLi/greenroom
+/plugin install greenroom@greenroom
+
+# 或任何支持 skills 的 agent
+npx skills add YunyueLi/greenroom
+```
 
 然后告诉 agent：
 
-> 我要面试 `<公司>` 的 `<岗位>`，这是我的简历和 JD。
+> 我要面试 Y 公司的 X 岗位，这是我的简历和 JD。
 
-`greenroom` skill 会编排全流程，并把材料写进一个工作台文件夹。
+`greenroom` skill 会编排 `job-intel`、`story-bank`、`industry-brief`、`interview-script`、`mock-interview` 和 `debrief`。
 
-## 运行 core runtime
+## 仓库结构
 
-```bash
-python3 serve.py ~/my-greenroom
-```
+| 路径 | 是什么 |
+| --- | --- |
+| `app/greenroom.html` | 单文件 Web 控制台 |
+| `serve.py` / `start.sh` | 本地后端和一键启动脚本 |
+| `skills/` | 面试准备流水线 skills |
+| `docs/workspace-spec.md` | Markdown 工作台契约 |
+| `docs/realtime-bridge.md` | 实时助手 / 模拟面试后端契约 |
+| `examples/demo-workspace/` | 虚构示例工作台 |
+| `knowledge/` | 社区岗位百科种子 |
+| `worker/` | Cloudflare Worker 参考后端，支持 BYOK / 账号模式 |
+| `tools/` | 嵌入、示例和工作台工具 |
 
-运行时暴露：
+## 官方托管版
 
-- `GET /config`
-- `GET /workspace/bundle`
-- `GET /workspace/file?path=...`
-- `POST /api/answer`
-- `POST /api/mock`
-- `POST /api/setup`
+官方托管产品在 [greenroom.ungetsu.net](https://greenroom.ungetsu.net/)。它是这个项目的维护部署，提供账号同步、托管云配置、生产可用性维护和托管模型能力。
 
-在工作台 `.env` 里加入 `MODEL_API_KEY=sk-...` 后，可以用任意 OpenAI 兼容模型接口解锁实时答题和模拟面试。
+自部署仍是一等路径：可以跑本地后端、带自己的模型 key，也可以基于公开代码部署自己的 Worker / Supabase 栈。
 
-## 工作流
+## 设计和数据
 
-```
-简历 + 目标 JD
-  -> 岗位调研
-  -> 经历库
-  -> 行业通识
-  -> 逐字稿
-  -> 模拟面试
-  -> 面后复盘，喂给下一轮
-```
+greenroom 使用暖纸底、高对比墨色、克制绿色、自定义 wordmark 和岗位像素工牌头像。它服务两个状态：面试前安静准备，面试中低干扰提词。
 
-工作台本质上是一组 Markdown 文件，所以可读、可迁移。官方产品在同一套 core 契约上增加账号、同步、产品级 UI、托管模型能力和精选知识。
+本地工作台是一组 Markdown 文件。不要提交真实简历、真实面试材料、薪资信息、公司机密、API key、生产日志或用户数据。
 
-## 许可证
+## License
 
-greenroom 是 open-core 项目。
+greenroom Community Edition 使用 GNU Affero General Public License v3.0。见 [LICENSE](LICENSE)。
 
-- Core 文件使用 MIT。见 [licenses/MIT.txt](licenses/MIT.txt)。
-- 官方托管产品和品牌单独治理。见 [OPEN_CORE.md](OPEN_CORE.md) 和 [TRADEMARK.md](TRADEMARK.md)。
+greenroom 名称、logo、wordmark、域名和容易混淆的产品品牌使用由 [TRADEMARK.md](TRADEMARK.md) 管理。

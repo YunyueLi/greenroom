@@ -2,14 +2,14 @@
   "name": "greenroom",
   "displayName": "Greenroom · 候场",
   "version": "0.39.0",
-  "description": "MIT-licensed greenroom core: workspace contract, local runtime, and 6 interview-prep skills.",
+  "description": "Open-source interview prep workbench: role research, story bank, verbatim scripts, industry briefs, mock interviews, and debriefs.",
   "author": {
     "name": "Yunyue Li",
     "url": "https://github.com/YunyueLi"
   },
   "homepage": "https://github.com/YunyueLi/greenroom",
   "repository": "https://github.com/YunyueLi/greenroom",
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "keywords": [
     "interview",
     "interview-prep",

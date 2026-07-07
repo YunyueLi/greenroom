@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>greenroom</title>
+<script>
+  (function(){
+    var path = window.location.pathname || "/";
+    if (/\.[a-z0-9]{2,8}$/i.test(path)) return;
+    var params = new URLSearchParams(window.location.search || "");
+    params.set("path", path);
+    params.set("v", Date.now().toString(36));
+    window.location.replace("/app/greenroom.html?" + params.toString() + window.location.hash);
+  })();
+</script>
+</head>
+<body></body>
+</html>

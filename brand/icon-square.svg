@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="greenroom">
+<title>greenroom</title>
+<defs>
+  <linearGradient id="bg" x1="128" y1="80" x2="890" y2="944" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#0F452E"/>
+    <stop offset=".48" stop-color="#0A3323"/>
+    <stop offset="1" stop-color="#082619"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="55%" cy="50%" r="45%">
+    <stop stop-color="#FFE8AA" stop-opacity=".72"/>
+    <stop offset=".42" stop-color="#F7D77B" stop-opacity=".22"/>
+    <stop offset="1" stop-color="#F7D77B" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="light" x1="496" y1="210" x2="540" y2="812" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#FFF0C2"/>
+    <stop offset=".52" stop-color="#FFE09A"/>
+    <stop offset="1" stop-color="#F0C96B"/>
+  </linearGradient>
+  <linearGradient id="door" x1="548" y1="256" x2="750" y2="744" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#5D9263"/>
+    <stop offset=".42" stop-color="#316B45"/>
+    <stop offset="1" stop-color="#173F2B"/>
+  </linearGradient>
+  <linearGradient id="curtain" x1="272" y1="216" x2="472" y2="780" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#3F9963"/>
+    <stop offset=".52" stop-color="#28784E"/>
+    <stop offset="1" stop-color="#0E3C2A"/>
+  </linearGradient>
+  <linearGradient id="curtainDark" x1="430" y1="222" x2="288" y2="754" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#0C3222" stop-opacity=".08"/>
+    <stop offset="1" stop-color="#041910" stop-opacity=".62"/>
+  </linearGradient>
+  <linearGradient id="floor" x1="374" y1="702" x2="710" y2="854" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#FFF1C5"/>
+    <stop offset=".55" stop-color="#E6B95A"/>
+    <stop offset="1" stop-color="#1A2D20"/>
+  </linearGradient>
+  <filter id="softShadow" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
+    <feDropShadow dx="0" dy="26" stdDeviation="24" flood-color="#020A07" flood-opacity=".36"/>
+  </filter>
+</defs>
+<rect width="1024" height="1024" fill="url(#bg)"/>
+<path d="M126 762 C268 874 736 900 914 764 L914 1024 L126 1024 Z" fill="#04190F" opacity=".32"/>
+<circle cx="566" cy="498" r="420" fill="url(#glow)"/>
+<g filter="url(#softShadow)">
+  <path d="M288 224 H572 V796 H288 Z" fill="#0B2E20" opacity=".48"/>
+  <path d="M504 232 L724 220 L692 768 L358 792 C434 664 482 430 504 232 Z" fill="url(#light)"/>
+  <path d="M334 728 L552 696 L756 768 L520 836 Z" fill="url(#floor)" opacity=".9"/>
+  <path d="M520 838 L758 768 L828 842 L466 876 Z" fill="#051B12" opacity=".45"/>
+  <path d="M254 224 H520 C514 444 470 660 340 792 H254 Z" fill="#123B29"/>
+  <path d="M254 224 H324 C326 442 314 620 266 764 H254 Z" fill="url(#curtain)" opacity=".74"/>
+  <path d="M336 224 H386 C392 438 368 635 286 774 C326 616 338 436 336 224 Z" fill="url(#curtain)"/>
+  <path d="M400 224 H452 C454 440 416 648 306 784 C388 624 404 430 400 224 Z" fill="url(#curtain)"/>
+  <path d="M462 224 H520 C504 464 446 668 326 792 C444 624 464 416 462 224 Z" fill="url(#curtain)"/>
+  <path d="M254 224 H520 C514 444 470 660 340 792 H254 Z" fill="url(#curtainDark)"/>
+  <path d="M324 224 C330 446 314 624 266 764" fill="none" stroke="#092719" stroke-width="14" stroke-linecap="round" opacity=".6"/>
+  <path d="M386 224 C392 438 368 635 286 774" fill="none" stroke="#092719" stroke-width="14" stroke-linecap="round" opacity=".55"/>
+  <path d="M452 224 C454 440 416 648 306 784" fill="none" stroke="#092719" stroke-width="14" stroke-linecap="round" opacity=".5"/>
+  <path d="M536 248 L742 224 L742 768 L536 724 Z" fill="#102E20" opacity=".72"/>
+  <path d="M548 236 L754 224 L754 760 L548 728 Z" fill="url(#door)"/>
+  <path d="M548 236 L754 224 L754 260 L548 286 Z" fill="#FFE8AE" opacity=".72"/>
+  <path d="M754 224 L780 238 L780 748 L754 760 Z" fill="#0A2217" opacity=".42"/>
+  <path d="M548 728 L754 760 L704 790 L548 754 Z" fill="#071E14" opacity=".42"/>
+  <circle cx="650" cy="514" r="26" fill="#F5C76E"/>
+  <circle cx="650" cy="514" r="10" fill="#FFE5A3" opacity=".45"/>
+</g>
+</svg>

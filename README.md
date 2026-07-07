@@ -1,81 +1,111 @@
-# greenroom core
+<div align="center">
 
-**Open-source interview-prep core for building a portable preparation workspace.**
+<img src="icon-512.png" width="104" alt="greenroom">
 
-greenroom core turns a résumé and target role into a local Markdown workspace:
-role research, experience cards, industry reading, spoken interview scripts,
-mock interviews, and debriefs. The public repository contains the reusable
-contract and agent skills. The official hosted product lives separately.
+# greenroom · 候场
 
-[Open official product](https://greenroom.ungetsu.net/) ·
-[中文 README](README.zh-CN.md) ·
-[Open-core policy](OPEN_CORE.md) ·
-[Workspace spec](docs/workspace-spec.md)
+**An open-source AI workbench for interview prep.**
 
-## What Is Public
+*Give it your resume and a target JD. greenroom researches the role, turns your real experience into reusable story cards, writes scripts you can say out loud, runs mock interviews, and carries every debrief into the next round.*
 
-| Path | Purpose | License |
-| --- | --- | --- |
-| `skills/` | Claude / agent skills for the prep pipeline | MIT core |
-| `docs/workspace-spec.md` | Portable Markdown workspace contract | MIT core |
-| `docs/realtime-bridge.md` | Local live-copilot and mock-interview API contract | MIT core |
-| `serve.py` | Reference local runtime for a workspace folder | MIT core |
-| `examples/demo-workspace/` | Fictional demo workspace | MIT core |
-| `tools/workspace_codec.py` | Workspace helper utilities | MIT core |
+[![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-111.svg)](LICENSE)
+&nbsp;[![Release](https://img.shields.io/github/v/release/YunyueLi/greenroom?style=flat&color=111&label=Release)](https://github.com/YunyueLi/greenroom/releases)
+&nbsp;[![Stars](https://img.shields.io/github/stars/YunyueLi/greenroom?style=flat&color=111&label=Stars)](https://github.com/YunyueLi/greenroom)
+&nbsp;[![中文](https://img.shields.io/badge/README-中文-111.svg)](README.zh-CN.md)
 
-## Install Skills
+### [Open the hosted product](https://greenroom.ungetsu.net/) · [Run locally](#run-locally) · [Use the skills](#use-the-skills)
+
+</div>
+
+---
+
+> 候场 - the room where performers wait and prepare before going on stage.
+
+```
+resume + target JD -> role research       (company, interviewers, likely questions)
+                   -> experience bank    (your facts, one source of truth)
+                   -> industry brief     -> speakable scripts
+                   -> mock interview     -> coach report
+                   -> debrief            -> next-round prep
+```
+
+## What it does
+
+- **Builds the full prep kit.** From resume + JD to candidate profile, story bank, role intelligence, industry brief, interview scripts, mock rounds, and debriefs.
+- **Writes speakable answers.** Scripts are not outlines; they are first-person answers that keep numbers source-backed and role-specific.
+- **Keeps a portable workspace.** Everything lives as Markdown under a simple workspace contract, so agents, local tools, and the web app can read the same files.
+- **Includes the product UI.** The community repo ships the single-file web console, local backend, role encyclopedia seeds, Cloudflare Worker reference, and demo workspace.
+- **Supports local-first use.** Run it without an account. Add your own OpenAI-compatible model key only when you want live prompts, generation, or mock interviews.
+- **Offers a hosted path.** The hosted greenroom adds managed accounts, cloud sync, hosted model access, and the maintained production deployment.
+
+## Run locally
 
 ```bash
+git clone https://github.com/YunyueLi/greenroom.git
+cd greenroom
+./start.sh
+```
+
+Open the demo from the console, or mount your own workspace:
+
+```bash
+./start.sh ~/my-greenroom
+```
+
+Optional model access:
+
+```bash
+cp .env.example .env
+# edit MODEL_API_KEY, MODEL_API_BASE, MODEL_NAME
+```
+
+No key is needed for reading, browsing, or the role encyclopedia. A key unlocks live copilot, mock interview, and one-pass setup generation.
+
+## Use the skills
+
+```bash
+# Claude Code plugin, versioned updates
 /plugin marketplace add YunyueLi/greenroom
 /plugin install greenroom@greenroom
+
+# or any agent that supports skills
+npx skills add YunyueLi/greenroom
 ```
 
-Or copy `skills/*` into any compatible agent environment.
+Then tell your agent:
 
-Then tell the agent:
+> I'm interviewing for the X role at Y. Here is my resume and the JD.
 
-> I am interviewing for `<role>` at `<company>`. Here is my résumé and the JD.
+The `greenroom` skill orchestrates `job-intel`, `story-bank`, `industry-brief`, `interview-script`, `mock-interview`, and `debrief`.
 
-The `greenroom` skill orchestrates the pipeline and writes a workspace folder.
+## Repo layout
 
-## Run The Core Runtime
+| Path | What |
+| --- | --- |
+| `app/greenroom.html` | Single-file web console |
+| `serve.py` / `start.sh` | Local backend and one-command launcher |
+| `skills/` | Agent skills for the prep workflow |
+| `docs/workspace-spec.md` | Markdown workspace contract |
+| `docs/realtime-bridge.md` | Live copilot / mock interview backend contract |
+| `examples/demo-workspace/` | Fictional demo workspace |
+| `knowledge/` | Community role encyclopedia seeds |
+| `worker/` | Cloudflare Worker reference backend with BYOK/account-aware modes |
+| `tools/` | Embedding, demo, and workspace tooling |
 
-```bash
-python3 serve.py ~/my-greenroom
-```
+## Hosted greenroom
 
-The runtime exposes:
+The official hosted product is available at [greenroom.ungetsu.net](https://greenroom.ungetsu.net/). It is the maintained deployment of this project with account sync, managed cloud configuration, production uptime work, and hosted model access.
 
-- `GET /config`
-- `GET /workspace/bundle`
-- `GET /workspace/file?path=...`
-- `POST /api/answer`
-- `POST /api/mock`
-- `POST /api/setup`
+Self-hosting remains first-class: run the local backend, bring your own model key, or deploy your own Worker/Supabase stack from the public code.
 
-Add `MODEL_API_KEY=sk-...` to `.env` in your workspace to enable live answer
-generation and mock interviews with an OpenAI-compatible model provider.
+## Design and data
 
-## Workspace Flow
+greenroom uses a warm paper surface, high-contrast ink, restrained green, a custom wordmark, and pixel-art role badges. The product is designed for two states: quiet preparation before the interview and low-friction prompting during the interview.
 
-```
-résumé + target JD
-  -> job intel
-  -> story bank
-  -> industry brief
-  -> spoken scripts
-  -> mock interview
-  -> debrief for the next round
-```
-
-The workspace stays readable and portable because it is just Markdown. The
-official product adds hosted accounts, sync, product-grade UI, managed model
-access, and curated knowledge on top of the same core contract.
+Your local workspace is a folder of Markdown files. Do not commit real resumes, interview material, salary details, private company information, API keys, production logs, or user data.
 
 ## License
 
-greenroom is open core.
+greenroom Community Edition is licensed under the GNU Affero General Public License v3.0. See [LICENSE](LICENSE).
 
-- Core files are MIT-licensed. See [licenses/MIT.txt](licenses/MIT.txt).
-- The official hosted product and brand are governed separately. See
-  [OPEN_CORE.md](OPEN_CORE.md) and [TRADEMARK.md](TRADEMARK.md).
+The greenroom name, logo, wordmark, domain, and confusingly similar product branding are governed by [TRADEMARK.md](TRADEMARK.md).

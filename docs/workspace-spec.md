@@ -55,6 +55,15 @@ updated: 2026-06-10
 
 简历的 Markdown 转写，控制台「简历」页据此排版（`# 姓名` → 抬头；紧随其后的段落 → 联系方式行；`## ` → 分区；`### 公司｜岗位｜日期` → 条目，末段日期自动右对齐）。事实以 PDF 原件为准，改简历先改 PDF 再同步这里；greenroom 入口 skill 在初始化时自动完成转写。`resume.pdf` 可选地放在工作台根目录（或用 symlink 指向原件），服务直连模式下「简历」页提供原件打开入口。
 
+简历页同时承担「简历制作台」职责：`resume.md` 是候选人事实源，控制台可以从它导出 `resume.json`（JSON Resume 兼容结构）和 `rendercv.yaml`（RenderCV 兼容草稿），用于后续接入高质量 PDF 渲染、版本化简历、按岗位改写和外部模板编辑。
+
+开源适配边界：
+
+- **JSON Resume**：作为开放数据结构，适合做跨工具交换格式。
+- **RenderCV**：MIT，适合作为官方高质量 PDF / resume-as-code 渲染通道。
+- **Reactive Resume**：MIT，适合后续做可视化模板编辑或外部导入导出。
+- **OpenResume**：AGPL，适合参考其 ATS 解析体验或做独立外部服务；不要把代码直接合入闭源产品层。
+
 ### library/（资料）
 
 任意 Markdown 文件即被控制台「资料」页收录：标题取 frontmatter `title` 或文内第一个 `# 标题`；一级子目录名作为分组。industry-brief skill 的行业岗位通识、范本拆解、长文摘记都放这里。

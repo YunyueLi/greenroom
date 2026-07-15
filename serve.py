@@ -39,6 +39,16 @@ WORKSPACE = Path(sys.argv[1]).expanduser().resolve() if len(sys.argv) > 1 else N
 
 DEFAULT_API_BASE = "https://api.deepseek.com"
 DEFAULT_MODEL = "deepseek-v4-flash"
+STATIC_TYPES = {
+    ".svg": "image/svg+xml",
+    ".png": "image/png",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".webp": "image/webp",
+    ".ico": "image/x-icon",
+    ".json": "application/json; charset=utf-8",
+    ".webmanifest": "application/manifest+json; charset=utf-8",
+}
 
 
 # ---------------- 配置（.env：工作台根目录优先，其次脚本目录） ----------------
@@ -605,6 +615,8 @@ class Handler(BaseHTTPRequestHandler):
             self.end_headers()
         elif route == "/app":
             self._send(200, APP.read_bytes(), "text/html; charset=utf-8")
+        elif route == "/app/greenroom.html":
+            self._send(200, APP.read_bytes(), "text/html; charset=utf-8")
         elif route == "/config":
             cfg = {"has_key": bool(get_api_key()), "model": get_model(), "personas": list_personas()}
             self._send(200, json.dumps(cfg, ensure_ascii=False).encode("utf-8"),
@@ -635,6 +647,13 @@ class Handler(BaseHTTPRequestHandler):
                      else "application/octet-stream")
             self._send(200, fp.read_bytes(), ctype)
         else:
+            rel = unquote(route.lstrip("/"))
+            if rel and ".." not in rel.split("/") and not rel.startswith("."):
+                fp = ROOT / rel
+                suffix = fp.suffix.lower()
+                if fp.is_file() and suffix in STATIC_TYPES:
+                    self._send(200, fp.read_bytes(), STATIC_TYPES[suffix])
+                    return
             self._send(404, b"not found")
 
     def do_POST(self):

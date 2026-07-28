@@ -8,6 +8,7 @@
     python3 tools/embed-avatars.py
 零第三方依赖，标准库。结果缓存在 tools/.avatar-cache/，重跑只拉新增岗位。
 """
+import hashlib
 import json
 import re
 import time
@@ -45,6 +46,19 @@ IND_STYLE = {
 }
 FALLBACK_SEED = "greenroom"  # 未知岗位兜底头像
 
+# 肤色：不用 pixel-art 自带的候选表。那张表把八级色阶从最浅到最深各占一格、等概率抽，
+# 于是一屏岗位头像里中棕到深棕接近一半（实测 164 个头像 48%），和真实人群不像，更不像
+# 这个产品的用户。这里一种肤色都没删，只改抽中的比例——DiceBear 按下标等概率抽，同一个
+# 值写几次就是几份权重。八级按深浅归五档，份数 12 / 24 / 10 / 4 / 2，合计 52。
+# 与 app-v2 的 src/lib/avatar-tone.ts 是同一份分布，改一处要想到另一处。
+SKIN_MIX = ",".join(
+    ["ffdbac"] * 6 + ["f5cfa0"] * 6          # 偏浅 12
+    + ["eac393"] * 12 + ["e0b687"] * 12      # 东亚常见的浅暖色 24
+    + ["cb9e6e"] * 10                        # 中间的黄褐 10
+    + ["b68655"] * 4                         # 棕 4
+    + ["a26d3d"] + ["8d5524"]                # 深棕 2
+)
+
 
 def parse_roles():
     """[(industry_slug, en_title)]，en 作 seed，industry/en 作 key。"""
@@ -67,12 +81,14 @@ def strip_svg(svg: str) -> str:
 
 
 def fetch(seed: str, style: dict) -> str:
+    q = {"seed": seed, "skinColor": SKIN_MIX, **{k: str(v) for k, v in style.items()}}
+    url = API + "?" + urllib.parse.urlencode(q)
+    # 缓存键带上整条请求的指纹。只按 seed 存的话，改了配色重跑会安静地拿回旧图，
+    # 看起来跑成功了其实什么都没变
     key = re.sub(r"[^a-z0-9]+", "-", seed.lower()).strip("-")
-    cached = CACHE / f"{key}.svg"
+    cached = CACHE / f"{key}.{hashlib.sha1(url.encode('utf-8')).hexdigest()[:8]}.svg"
     if cached.exists():
         return cached.read_text(encoding="utf-8")
-    q = {"seed": seed, **{k: str(v) for k, v in style.items()}}
-    url = API + "?" + urllib.parse.urlencode(q)
     req = urllib.request.Request(url, headers={"User-Agent": "greenroom-embed-avatars/1.0"})
     for attempt in range(3):
         try:

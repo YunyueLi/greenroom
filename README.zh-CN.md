@@ -1,111 +1,135 @@
 <div align="center">
 
-<img src="icon-512.png" width="104" alt="greenroom">
+<img src="https://greenroom.ungetsu.net/icon-512.png" width="96" alt="greenroom">
 
 # greenroom · 候场
 
-**开源 AI 面试准备工作台。**
+**把面试准备做到能张口说出来为止。**
 
-*给它你的简历和目标 JD。greenroom 调研岗位，把真实经历整理成可复用的经历卡，写出能直接说出口的逐字稿，跑模拟面试，再把每一轮复盘喂给下一轮。*
+*七个 agent 技能包、27 个岗位的知识库、一套开放的 Markdown 工作台格式。把简历和目标 JD 交给 agent，拿回岗位情报、带出处的经历库、可朗读的逐字稿、模拟面试和复盘——复盘再喂给下一轮。*
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-111.svg)](LICENSE)
 &nbsp;[![Release](https://img.shields.io/github/v/release/YunyueLi/greenroom?style=flat&color=111&label=Release)](https://github.com/YunyueLi/greenroom/releases)
 &nbsp;[![Stars](https://img.shields.io/github/stars/YunyueLi/greenroom?style=flat&color=111&label=Stars)](https://github.com/YunyueLi/greenroom)
 &nbsp;[![English](https://img.shields.io/badge/README-English-111.svg)](README.md)
 
-### [打开官方托管版](https://greenroom.ungetsu.net/) · [本地运行](#本地运行) · [使用 skills](#使用-skills)
+### **[打开线上版 →](https://greenroom.ungetsu.net/)**&nbsp;&nbsp;·&nbsp;&nbsp;[装上技能包](#三十秒装好)&nbsp;&nbsp;·&nbsp;&nbsp;[读格式契约](docs/workspace-spec.md)
 
 </div>
 
 ---
 
-> 候场 - 演员上台之前等待和准备的房间。
+> 候场——上台之前，演员等待和准备的那个房间。
 
 ```
-简历 + 目标 JD -> 岗位调研   （公司、面试官、可能的考题）
-              -> 经历库     （你的事实，一份底座，按岗位换角度）
-              -> 行业通识   -> 逐字稿（按口语标准写）
-              -> 模拟面试   -> 教练报告
-              -> 复盘       -> 下一轮准备
+简历 + 目标 JD ─→ 岗位调研      （公司、面试官、可能考什么）
+              ─→ 经历库        （你的事实，只有一份底本）
+              ─→ 行业通识      ─→ 可朗读的逐字稿
+              ─→ 模拟面试      ─→ 教练报告
+              ─→ 面后复盘      ─→ 下一轮备战
 ```
 
-## 它做什么
+## 为什么用这个
 
-- **一次备齐全套材料。** 从简历和 JD 出发，生成候选人档案、经历库、岗位情报、行业通识、逐字稿、模拟面试和复盘。
-- **写能直接说出口的答案。** 不是要点提纲，而是第一人称口语稿；数字有出处，讲法按岗位换角度。
-- **保留可迁移工作台。** 所有材料按公开契约存成 Markdown，agent、本地工具和 Web App 读的是同一份工作台。
-- **包含产品界面。** 公开仓包含单文件 Web 控制台、本地后端、岗位百科种子、Cloudflare Worker 参考实现和示例工作台。
-- **本地优先。** 不登录也能跑。只有实时提词、生成和模拟面试需要你自己的 OpenAI 兼容模型 key。
-- **也有托管路径。** 官方 greenroom 提供账号、云同步、托管模型能力和持续维护的生产部署。
+**它写的是答案，不是提纲。** 多数准备工具给你几条要点，剩下最难的一步——临场把要点变成完整句子——还是留给你。greenroom 把句子写出来。
 
-## 本地运行
+**每个数字都带着自己的口径。** 逐字稿里出现一个数，同时写清它怎么算的、从哪来。被追问的时候，接住的是一个站得住的说法，不是当场编的。
+
+```markdown
+　　上线到现在，自助解决率从 31% 做到 52%，客服人力成本降了 18%。
+
+**数字出处**
+- 解决率 31%→52%，统计口径=未转人工且 24h 未重复进线（被追问时主动给口径）
+```
+
+**你的准备是一个属于你的文件夹。** 纯 Markdown，格式公开写明。没有锁定，也不需要导出——文件本来就在你手上，任何读得懂契约的工具都能读它。
+
+## 三十秒装好
+
+```bash
+# Claude Code 插件，可版本化更新
+/plugin marketplace add YunyueLi/greenroom
+/plugin install greenroom@greenroom
+```
+
+```bash
+# 或者任何支持 skills 的 agent
+npx skills add YunyueLi/greenroom
+```
+
+然后直接说：
+
+> 下周二面 Acme 的 AI 产品经理，这是我的简历和 JD。
+
+`greenroom` 入口技能会跑完整条流水线，写出一个工作台文件夹。说「只要逐字稿」或者「陪我练一轮」，它就只跑那一步。
+
+## 七个技能包
+
+| 技能包 | 做什么 |
+| --- | --- |
+| `greenroom` | 入口——跑完整流程，或者按需路由到某一步 |
+| `job-intel` | 拆 JD、查公司和面试官、预测下一轮考题 |
+| `story-bank` | 把你的真实经历挖成可复用的经历卡，数字带出处 |
+| `industry-brief` | 写这个行业和岗位的通识，补到能聊得像内行 |
+| `interview-script` | 把上面所有材料变成第一人称、能念出口的答案 |
+| `mock-interview` | 当面试官出题追问，练完给评分和教练报告 |
+| `debrief` | 把刚面完那一轮还原出来，转成逐字稿的修订清单 |
+
+## 它会写出什么
+
+```
+my-greenroom/
+├── profile.md                  候选人档案
+├── resume.md                   简历的 Markdown 转写，事实底本
+├── story-bank.md               经历卡，按岗位类型换讲法
+├── library/                    行业通识、调研、参考阅读
+└── jobs/<公司-岗位>/
+    ├── job.md                  JD 原文，附岗位进程时间线
+    ├── intel.md                公司、面试官、考题预测
+    ├── script.md               逐字稿
+    └── rounds/                 备战稿、模拟报告、面后复盘
+```
+
+[`examples/demo-workspace/`](examples/demo-workspace/) 是一份完整的示例工作台：格式是真的，人物是虚构的。
+
+## 岗位知识库
+
+[`knowledge/`](knowledge/) 收了 27 个岗位，按行业和职能分：高频题、岗位通识、追问模式。它不含任何候选人数据，可以放心读、放心 fork、放心贡献。`industry-brief` 技能包生成通识时会先查这里，攒得越全，每个新用户冷启动越快。
+
+## 在它上面搭东西
+
+工作台格式是对外公开的契约，不是内部实现细节。读同一份契约的工具之间天然互通。
+
+| | |
+| --- | --- |
+| [`docs/workspace-spec.md`](docs/workspace-spec.md) | 目录结构、frontmatter、`script.md` 题卡格式、HTTP 取数端点 |
+| [`docs/realtime-bridge.md`](docs/realtime-bridge.md) | 实时提词与模拟面试后端的接口契约 |
+| [`serve.py`](serve.py) | 零依赖参考后端，只用 Python 标准库 |
 
 ```bash
 git clone https://github.com/YunyueLi/greenroom.git
 cd greenroom
-./start.sh
+./start.sh ~/my-greenroom      # 在 :8787 上把工作台开成 HTTP 接口
 ```
 
-在控制台里打开示例，或挂载你自己的工作台：
+读工作台不需要 API key。想解锁实时提词、模拟面试和一次生成，在 `.env` 里填一个 OpenAI 兼容的 key。
 
-```bash
-./start.sh ~/my-greenroom
-```
+## 线上版
 
-可选模型配置：
+**[greenroom.ungetsu.net](https://greenroom.ungetsu.net/)** 是官方产品：完整界面、账号与云同步、托管模型能力、持续运维的正式部署。它读写的就是这里写明的同一套工作台格式，所以你照契约做的东西不会白做。
 
-```bash
-cp .env.example .env
-# 编辑 MODEL_API_KEY、MODEL_API_BASE、MODEL_NAME
-```
+## 这里有什么，没有什么
 
-阅读、浏览和岗位百科不需要 key。实时助手、模拟面试和一键生成工作台需要模型 key。
+**有的**，按 AGPL-3.0 授权：技能包、岗位知识库、工作台契约、参考后端、示例工作台。拿去跑、拿去改、拿去做兼容工具都可以。
 
-## 使用 skills
+**没有的**：产品界面、账号与云同步、托管服务端、品牌资产。这些属于官方产品。
 
-```bash
-# Claude Code 插件，版本化更新
-/plugin marketplace add YunyueLi/greenroom
-/plugin install greenroom@greenroom
+## 隐私
 
-# 或任何支持 skills 的 agent
-npx skills add YunyueLi/greenroom
-```
+工作台是你本机上的一个文件夹。真实简历、面试材料、薪资数字、公司内部信息、API key、生产日志——不要提交到这个仓库，也不要提交到任何别的公开仓库。
 
-然后告诉 agent：
+## 许可证
 
-> 我要面试 Y 公司的 X 岗位，这是我的简历和 JD。
-
-`greenroom` skill 会编排 `job-intel`、`story-bank`、`industry-brief`、`interview-script`、`mock-interview` 和 `debrief`。
-
-## 仓库结构
-
-| 路径 | 是什么 |
-| --- | --- |
-| `app/greenroom.html` | 单文件 Web 控制台 |
-| `serve.py` / `start.sh` | 本地后端和一键启动脚本 |
-| `skills/` | 面试准备流水线 skills |
-| `docs/workspace-spec.md` | Markdown 工作台契约 |
-| `docs/realtime-bridge.md` | 实时助手 / 模拟面试后端契约 |
-| `examples/demo-workspace/` | 虚构示例工作台 |
-| `knowledge/` | 社区岗位百科种子 |
-| `worker/` | Cloudflare Worker 参考后端，支持 BYOK / 账号模式 |
-| `tools/` | 嵌入、示例和工作台工具 |
-
-## 官方托管版
-
-官方托管产品在 [greenroom.ungetsu.net](https://greenroom.ungetsu.net/)。它是这个项目的维护部署，提供账号同步、托管云配置、生产可用性维护和托管模型能力。
-
-自部署仍是一等路径：可以跑本地后端、带自己的模型 key，也可以基于公开代码部署自己的 Worker / Supabase 栈。
-
-## 设计和数据
-
-greenroom 使用暖纸底、高对比墨色、克制绿色、自定义 wordmark 和岗位像素工牌头像。它服务两个状态：面试前安静准备，面试中低干扰提词。
-
-本地工作台是一组 Markdown 文件。不要提交真实简历、真实面试材料、薪资信息、公司机密、API key、生产日志或用户数据。
-
-## License
-
-greenroom Community Edition 使用 GNU Affero General Public License v3.0。见 [LICENSE](LICENSE)。
+greenroom Community Edition 按 GNU Affero General Public License v3.0 授权，见 [LICENSE](LICENSE)。
 
 greenroom 名称、logo、wordmark、域名和容易混淆的产品品牌使用由 [TRADEMARK.md](TRADEMARK.md) 管理。

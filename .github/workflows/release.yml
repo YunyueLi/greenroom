@@ -1,8 +1,7 @@
 name: Release
 
-# 打 tag（v*）即自动发布：校验单文件控制台是最新嵌入 → 打包 → 创建 GitHub Release。
+# 打 tag（v*）即自动发布：打包 skills + 知识库 + 契约 → 创建 GitHub Release。
 # 也可在 Actions 页手动触发（workflow_dispatch），版本取自 .claude-plugin/plugin.json。
-# 根治两个长期隐患：① 改了 knowledge/ 忘重嵌 ② Release 永远落后于代码。
 # 本流程只发布 GitHub Release，不负责官方 hosted 部署。
 
 on:
@@ -19,24 +18,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: 校验单文件控制台是最新嵌入
-        # 重跑本地 embed（纯标准库），若 app/greenroom.html 会变=有人改了 knowledge/ 或
-        # examples/ 却忘了重嵌 → 直接失败。头像 embed-avatars.py 需联网/DiceBear，这里不校验，
-        # 岗位英文名变动时手动跑。
-        run: |
-          python3 tools/embed-knowledge.py
-          python3 tools/embed-demo.py
-          if ! git diff --quiet -- app/greenroom.html; then
-            echo "::error::app/greenroom.html 过期。先跑 tools/embed-knowledge.py + tools/embed-demo.py（岗位变动再跑 embed-avatars.py），提交后再打 tag。"
-            git --no-pager diff --stat -- app/greenroom.html
-            exit 1
-          fi
-          echo "控制台与 knowledge/、examples/ 同步。"
-
       - name: 解析版本与 tag
         id: ver
         run: |
@@ -51,15 +32,13 @@ jobs:
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "发布 $TAG（版本 $VER）"
 
-      - name: 打包产物（单文件控制台 + bundle.zip）
+      - name: 打包产物（bundle.zip）
         run: |
           mkdir -p dist
-          cp app/greenroom.html dist/greenroom-console.html
           STAGE="$(mktemp -d)"
           mkdir -p "$STAGE/greenroom"
-          cp app/greenroom.html "$STAGE/greenroom/greenroom-console.html"
-          cp serve.py README.md README.zh-CN.md LICENSE "$STAGE/greenroom/"
-          cp -R skills docs "$STAGE/greenroom/"
+          cp serve.py start.sh Makefile .env.example README.md README.zh-CN.md LICENSE "$STAGE/greenroom/"
+          cp -R skills docs knowledge examples tools .claude-plugin "$STAGE/greenroom/"
           ( cd "$STAGE" && zip -qr "$GITHUB_WORKSPACE/dist/greenroom-bundle.zip" greenroom )
           ls -lh dist
 
@@ -81,11 +60,11 @@ jobs:
         run: |
           TAG="${{ steps.ver.outputs.tag }}"
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" dist/greenroom-console.html dist/greenroom-bundle.zip --clobber
+            gh release upload "$TAG" dist/greenroom-bundle.zip --clobber
             gh release edit "$TAG" --title "greenroom $TAG" --notes-file dist/notes.md
           else
             gh release create "$TAG" \
-              dist/greenroom-console.html dist/greenroom-bundle.zip \
+              dist/greenroom-bundle.zip \
               --title "greenroom $TAG" \
               --notes-file dist/notes.md
           fi

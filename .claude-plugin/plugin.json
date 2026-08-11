@@ -1,8 +1,8 @@
 {
   "name": "greenroom",
   "displayName": "Greenroom · 候场",
-  "version": "0.39.0",
-  "description": "Open-source interview prep workbench: role research, story bank, verbatim scripts, industry briefs, mock interviews, and debriefs.",
+  "version": "0.40.0",
+  "description": "Interview prep skills: role intel, a sourced story bank, speakable verbatim scripts, industry briefs, mock interviews with scoring, and debriefs that feed the next round.",
   "author": {
     "name": "Yunyue Li",
     "url": "https://github.com/YunyueLi"

@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""greenroom 本地服务：控制台 + 工作台直连 + 实时提词 + 模拟面试，单文件标准库。
+"""greenroom 本地后端：工作台直连 + 实时提词 + 模拟面试，单文件标准库、零依赖。
+
+这是 docs/realtime-bridge.md 那套 HTTP 契约的参考实现。它只提供接口，不带界面——
+自己写提词客户端、给 agent 当取数后端，或者照着它实现一份自己的服务端，都从这里开始。
 
     python3 serve.py ~/my-greenroom        # 挂载工作台（jobs/ 下的岗位自动成为提词与模拟面试的选项）
-    python3 serve.py                       # 不挂载 = 纯控制台（页内点「看示例」）
+    python3 serve.py                       # 不挂载 = 只有 /config 与静态取数
 
 无 API key 时是纯阅读服务；要解锁「实时助手」与「模拟面试」，在工作台根目录（或本脚本目录）放 .env：
 
@@ -12,7 +15,7 @@
     MODEL_NAME=deepseek-v4-flash               # 可选：模型名
 
 端点（协议见 docs/realtime-bridge.md）：
-    /app               控制台
+    /                  端点清单（JSON）
     /workspace/bundle  工作台 .md 全文 + 资产清单（实时读盘）
     /workspace/file    单文件取回（?path=，pdf 等二进制）
     /config            personas（自动扫 jobs/）+ 模型与 key 状态
@@ -25,7 +28,6 @@ import os
 import sys
 import re
 import struct
-import webbrowser
 import urllib.request
 import urllib.error
 from pathlib import Path
@@ -34,7 +36,6 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 PORT = 8787
 ROOT = Path(__file__).resolve().parent
-APP = ROOT / "app" / "greenroom.html"
 WORKSPACE = Path(sys.argv[1]).expanduser().resolve() if len(sys.argv) > 1 else None
 
 DEFAULT_API_BASE = "https://api.deepseek.com"
@@ -610,13 +611,21 @@ class Handler(BaseHTTPRequestHandler):
         url = urlparse(self.path)
         route = url.path
         if route == "/":
-            self.send_response(302)
-            self.send_header("Location", "/app")
-            self.end_headers()
-        elif route == "/app":
-            self._send(200, APP.read_bytes(), "text/html; charset=utf-8")
-        elif route == "/app/greenroom.html":
-            self._send(200, APP.read_bytes(), "text/html; charset=utf-8")
+            index = {
+                "service": "greenroom local backend",
+                "spec": "docs/realtime-bridge.md",
+                "workspace": str(WORKSPACE) if WORKSPACE else None,
+                "endpoints": {
+                    "GET /workspace/bundle": "工作台 .md 全文 + 资产清单",
+                    "GET /workspace/file?path=": "单文件取回",
+                    "GET /config": "personas + 模型与 key 状态",
+                    "POST /api/answer": "实时提词（流式纯文本）",
+                    "POST /api/mock": "模拟面试（流式纯文本）",
+                    "POST /api/setup": "工作台生成（流式进度）",
+                },
+            }
+            self._send(200, json.dumps(index, ensure_ascii=False, indent=2).encode("utf-8"),
+                       "application/json; charset=utf-8")
         elif route == "/config":
             cfg = {"has_key": bool(get_api_key()), "model": get_model(), "personas": list_personas()}
             self._send(200, json.dumps(cfg, ensure_ascii=False).encode("utf-8"),
@@ -684,14 +693,14 @@ class Handler(BaseHTTPRequestHandler):
         return key
 
     def _byok_key(self):
-        """BYOK：优先用请求头 X-Greenroom-Key（控制台「设置」面板填的，仅存浏览器本机），否则回退 .env。
+        """BYOK：优先用请求头 X-Greenroom-Key（客户端逐请求带上，本服务不落盘），否则回退 .env。
         占位假 key 视作未配置。返回 (key, model)；无 key 时已发 401、返回 (None, None)。"""
         hk = (self.headers.get("X-Greenroom-Key") or "").strip()
         if hk == "sk-your-own-key-here":
             hk = ""
         key = hk or get_api_key()
         if not key:
-            self._send(401, "未配置模型 key：点控制台右上角「设置」（齿轮）填入你的 key（仅存本机），或在 .env 写 MODEL_API_KEY=sk-xxx。".encode("utf-8"))
+            self._send(401, "未配置模型 key：在 .env 写 MODEL_API_KEY=sk-xxx，或让客户端逐请求带上 X-Greenroom-Key 请求头。".encode("utf-8"))
             return None, None
         model = (self.headers.get("X-Greenroom-Model") or "").strip() or get_model()
         return key, model
@@ -933,7 +942,7 @@ class Handler(BaseHTTPRequestHandler):
                         continue
                 if saved:
                     emit(f"##STEP 已存入 {saved} 个附件（jobs/{slug}/attachments/）")
-            # 时间线首条（## 时间线 区块：控制台岗位页渲染，后续轮次手动或 debrief 回写）
+            # 时间线首条（## 时间线 区块，见 docs/workspace-spec.md；后续轮次手动或 debrief 回写）
             jp = WORKSPACE / "jobs" / slug / "job.md"
             today_full = __import__("datetime").date.today().strftime("%Y.%m.%d")
             try:
@@ -1010,16 +1019,15 @@ class Handler(BaseHTTPRequestHandler):
 
 def main():
     server = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
-    ws = str(WORKSPACE) if WORKSPACE else "（未挂载，控制台内点「看示例」或拖文件夹）"
+    ws = str(WORKSPACE) if WORKSPACE else "（未挂载：python3 serve.py ~/my-greenroom）"
     key_status = "已配置 ✓（实时助手 / 模拟面试可用）" if get_api_key() else "未配置（纯阅读模式；.env 写 MODEL_API_KEY 解锁提词与模拟面试）"
     personas = list_personas()
-    print("greenroom 已启动")
-    print(f"  控制台   http://127.0.0.1:{PORT}/app")
+    print("greenroom 本地后端已启动")
+    print(f"  端点     http://127.0.0.1:{PORT}/ （契约见 docs/realtime-bridge.md）")
     print(f"  工作台   {ws}")
     print(f"  岗位     {('、'.join(personas.values())) if personas else '（无 jobs/ 目录）'}")
     print(f"  模型     {get_model()} · key {key_status}")
     print("  关闭     Control + C")
-    webbrowser.open(f"http://127.0.0.1:{PORT}/app")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

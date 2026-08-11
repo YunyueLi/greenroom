@@ -9,12 +9,14 @@ portable, and trustworthy.
 - `skills/` workflow improvements
 - `docs/workspace-spec.md` and compatible workspace tooling
 - `serve.py`, `start.sh`, and local runtime fixes
-- `app/greenroom.html` product-quality UI improvements
 - `knowledge/` community role encyclopedia entries based on public,
   non-confidential sources
 - `examples/demo-workspace/` fictional demo data
-- `worker/` self-hosting and BYOK improvements
-- accessibility, performance, and cross-browser fixes
+- tools that read or write the workspace contract from other editors and agents
+
+The hosted product UI, its brand assets, and the hosted service backend are not
+part of this repository. Contributions that require them belong in a bug report
+instead of a pull request.
 
 ## License
 
@@ -33,11 +35,12 @@ consistent with `examples/demo-workspace/`.
 
 ## Product Direction
 
-The public repository should remain useful on its own. Avoid changes that turn
-the community edition into a hollow shell that only works with the hosted
-service. Hosted greenroom may add managed accounts, cloud sync, hosted model
-access, and operational polish, but the open project should still be runnable
-and understandable locally.
+The public repository should remain useful on its own. The skills, the role
+knowledge base, the workspace contract, and the reference backend must keep
+working end to end without an account and without the hosted service. Hosted
+greenroom adds the product UI, managed accounts, cloud sync, hosted model
+access, and operational polish; the open project stays a complete, portable
+toolkit on its own terms.
 
 ## Brand
 

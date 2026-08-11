@@ -1,8 +1,8 @@
-# greenroom — 常用命令。`make` 或 `make dev` = 一键本地运行。
+# greenroom — 常用命令。`make` 或 `make dev` = 一键起本地后端。
 .DEFAULT_GOAL := dev
 .PHONY: dev serve help
 
-dev:   ## 一键本地运行：控制台 + 模型代理 + 自动开浏览器（= ./start.sh）
+dev:   ## 一键起本地后端：工作台取数 + 实时提词 + 模拟面试接口（= ./start.sh）
 	@./start.sh
 
 serve: ## 直接起后端（可带工作台目录：make serve DIR=~/my-greenroom）

@@ -1,3 +1,6 @@
+
+</think>
+
 <div align="center">
 
 <img src="https://greenroom.ungetsu.net/icon-512.png" width="96" alt="greenroom">
@@ -36,7 +39,7 @@ resume + target JD ─→ role research      (company, interviewers, likely ques
 **Every number carries its own definition.** A script line never states a figure without recording how it was counted and where it came from, so a follow-up question lands on something you can defend instead of something you improvised.
 
 ```markdown
-　　上线到现在，自助解决率从 31% 做到 52%，客服人力成本降了 18%。
+	上线到现在，自助解决率从 31% 做到 52%，客服人力成本降了 18%。
 
 **数字出处**
 - 解决率 31%→52%，统计口径=未转人工且 24h 未重复进线（被追问时主动给口径）
@@ -109,7 +112,7 @@ The workspace format is a published contract, not an internal detail. Anything t
 ```bash
 git clone https://github.com/YunyueLi/greenroom.git
 cd greenroom
-./start.sh ~/my-greenroom      # serves the workspace over HTTP on :8787
+./start.sh ~/my-greenroom      # serves the workspace over HTTP on :8765
 ```
 
 No API key is needed to read a workspace. Add an OpenAI-compatible key in `.env` to unlock live prompting, mock interviews, and one-pass generation.

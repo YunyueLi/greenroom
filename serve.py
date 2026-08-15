@@ -34,7 +34,7 @@ from pathlib import Path
 from urllib.parse import urlparse, parse_qs, unquote, quote, urlencode
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
-PORT = 8787
+PORT = 8765
 ROOT = Path(__file__).resolve().parent
 WORKSPACE = Path(sys.argv[1]).expanduser().resolve() if len(sys.argv) > 1 else None
 

@@ -6,7 +6,7 @@
 
 **把面试准备做到能张口说出来为止。**
 
-*七个 agent 技能包、27 个岗位的知识库、一套开放的 Markdown 工作台格式。把简历和目标 JD 交给 agent，拿回岗位情报、带出处的经历库、可朗读的逐字稿、模拟面试和复盘——复盘再喂给下一轮。*
+*七个 agent 技能包、160+ 岗位的知识库、一套开放的 Markdown 工作台格式。把简历和目标 JD 交给 agent，拿回岗位情报、带出处的经历库、可朗读的逐字稿、模拟面试和复盘——复盘再喂给下一轮。*
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-111.svg)](LICENSE)
 &nbsp;[![Release](https://img.shields.io/github/v/release/YunyueLi/greenroom?style=flat&color=111&label=Release)](https://github.com/YunyueLi/greenroom/releases)
@@ -94,7 +94,7 @@ my-greenroom/
 
 ## 岗位知识库
 
-[`knowledge/`](knowledge/) 收了 27 个岗位，按行业和职能分：高频题、岗位通识、追问模式。它不含任何候选人数据，可以放心读、放心 fork、放心贡献。`industry-brief` 技能包生成通识时会先查这里，攒得越全，每个新用户冷启动越快。
+[`knowledge/`](knowledge/) 收了 160+ 个岗位条目，分在 27 个行业与职能分组里：高频题、岗位通识、追问模式。它不含任何候选人数据，可以放心读、放心 fork、放心贡献。`industry-brief` 技能包生成通识时会先查这里，攒得越全，每个新用户冷启动越快。
 
 ## 在它上面搭东西
 
@@ -109,7 +109,7 @@ my-greenroom/
 ```bash
 git clone https://github.com/YunyueLi/greenroom.git
 cd greenroom
-./start.sh ~/my-greenroom      # 在 :8787 上把工作台开成 HTTP 接口
+./start.sh ~/my-greenroom      # 在 :8765 上把工作台开成 HTTP 接口
 ```
 
 读工作台不需要 API key。想解锁实时提词、模拟面试和一次生成，在 `.env` 里填一个 OpenAI 兼容的 key。

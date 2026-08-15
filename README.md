@@ -6,7 +6,7 @@
 
 **Interview prep that ends in words you can actually say.**
 
-*Seven agent skills, a 27-role knowledge base, and an open Markdown workspace format. Hand an agent your resume and a target JD — get role intel, a sourced story bank, speakable scripts, mock rounds, and debriefs that feed the next round.*
+*Seven agent skills, a knowledge base of 160+ roles, and an open Markdown workspace format. Hand an agent your resume and a target JD — get role intel, a sourced story bank, speakable scripts, mock rounds, and debriefs that feed the next round.*
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-111.svg)](LICENSE)
 &nbsp;[![Release](https://img.shields.io/github/v/release/YunyueLi/greenroom?style=flat&color=111&label=Release)](https://github.com/YunyueLi/greenroom/releases)
@@ -94,7 +94,7 @@ A fictional example workspace lives in [`examples/demo-workspace/`](examples/dem
 
 ## The role knowledge base
 
-[`knowledge/`](knowledge/) holds 27 roles across industries and functions: high-frequency questions, role fundamentals, follow-up patterns. It contains no candidate data and is safe to read, fork, and contribute to. The `industry-brief` skill checks it first, so the more complete it gets, the faster every new user starts.
+[`knowledge/`](knowledge/) holds 160+ role entries in 27 industry and function groups: high-frequency questions, role fundamentals, follow-up patterns. It contains no candidate data and is safe to read, fork, and contribute to. The `industry-brief` skill checks it first, so the more complete it gets, the faster every new user starts.
 
 ## Build on it
 
@@ -109,7 +109,7 @@ The workspace format is a published contract, not an internal detail. Anything t
 ```bash
 git clone https://github.com/YunyueLi/greenroom.git
 cd greenroom
-./start.sh ~/my-greenroom      # serves the workspace over HTTP on :8787
+./start.sh ~/my-greenroom      # serves the workspace over HTTP on :8765
 ```
 
 No API key is needed to read a workspace. Add an OpenAI-compatible key in `.env` to unlock live prompting, mock interviews, and one-pass generation.

@@ -1,7 +1,7 @@
 ---
 name: interview-script
 description: Writes verbatim, speakable interview scripts (逐字稿) — spoken-style answers the candidate can read aloud, organized in modules with quick-reference anchors, with every number traced to the story bank and given with its source. Use when the user asks for interview answers, answer drafts, 逐字稿 / 答题稿 / 这题怎么答 / 帮我写自我介绍 / 准备答案, or before a specific round. Do NOT use for mock practice (use mock-interview) or for collecting raw material (use story-bank first if the bank is empty).
-license: MIT
+license: AGPL-3.0
 metadata:
   author: Yunyue Li
   version: "0.1.0"

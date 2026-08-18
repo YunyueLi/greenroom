@@ -1,7 +1,7 @@
 ---
 name: greenroom
 description: Interview preparation workbench entry point. Runs the full pipeline from resume + target company + JD to a complete prep workspace (research, experience bank, verbatim scripts, industry brief), or routes to a single step. Use when the user says they have an interview coming up, wants interview prep, uploads a resume with a target job, mentions 面试准备 / 我要面试了 / 帮我准备面试 / 帮我把面试材料全做出来 / 一条龙, or asks "where do I start". Do NOT use for writing resumes from scratch, salary negotiation after offer, or live in-interview assistance.
-license: MIT
+license: AGPL-3.0
 metadata:
   author: Yunyue Li
   version: "0.3.0"
@@ -29,7 +29,7 @@ metadata:
 | 4 | industry-brief | `library/<行业-岗位>-通识.md`（行业与岗位参考阅读） |
 | 5 | interview-script | `jobs/<slug>/script.md`（可朗读逐字稿） |
 
-收尾：汇报生成清单 + 提示工作台目录位置（Markdown 直接读，或用任一按 docs/workspace-spec.md 实现的客户端打开）；建议面试前跑一次 mock-interview、面试后 24 小时内跑 debrief。这套工作台同时是实时提词后端的取数源（逐字稿 + 调研，见 docs/realtime-bridge.md）。
+收尾：汇报生成清单 + 提示工作台目录位置（Markdown 直接读，或用任一按 docs/workspace-spec.md 实现的客户端打开）；建议面试前跑一次 mock-interview、面试后 24 小时内跑 debrief。
 
 ## 六步方法（单步路由用）
 

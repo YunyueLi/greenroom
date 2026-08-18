@@ -103,8 +103,8 @@ The workspace format is a published contract, not an internal detail. Anything t
 | | |
 | --- | --- |
 | [`docs/workspace-spec.md`](docs/workspace-spec.md) | File layout, frontmatter, the `script.md` card format, the HTTP read endpoints |
-| [`docs/realtime-bridge.md`](docs/realtime-bridge.md) | Contract for live-prompting and mock-interview backends |
-| [`serve.py`](serve.py) | Zero-dependency reference backend — Python standard library only |
+| [`docs/realtime-bridge.md`](docs/realtime-bridge.md) | How to wire a workspace into your own tool — over HTTP, or by reading the files directly |
+| [`serve.py`](serve.py) | Zero-dependency reference server for the workspace read endpoints — Python standard library only |
 
 ```bash
 git clone https://github.com/YunyueLi/greenroom.git
@@ -112,17 +112,17 @@ cd greenroom
 ./start.sh ~/my-greenroom      # serves the workspace over HTTP on :8765
 ```
 
-No API key is needed to read a workspace. Add an OpenAI-compatible key in `.env` to unlock live prompting, mock interviews, and one-pass generation.
+No API key and no account. The server reads the folder and hands it to any client that speaks the spec.
 
 ## The hosted app
 
-**[greenroom.ungetsu.net](https://greenroom.ungetsu.net/)** is the official product: the full interface, accounts and cloud sync, hosted model access, and a maintained deployment. It reads and writes the same workspace format documented here, so nothing you build against the spec is wasted.
+**[greenroom.ungetsu.net](https://greenroom.ungetsu.net/)** is the official product: the full interface, accounts and cloud sync, hosted model access — live prompting during the interview, mock interview rounds, and one-pass workspace generation — and a maintained deployment. It reads and writes the same workspace format documented here, so nothing you build against the spec is wasted.
 
 ## What's here and what isn't
 
-**Here**, under AGPL-3.0: the skills, the role knowledge base, the workspace contract, the reference backend, the demo workspace. Run it, fork it, build compatible tools on it.
+**Here**, under AGPL-3.0: the skills, the role knowledge base, the workspace contract, the reference read server, the demo workspace. Run it, fork it, build compatible tools on it.
 
-**Not here**: the product interface, accounts and cloud sync, the hosted service backend, and the brand assets. Those belong to the official product.
+**Not here**: the product interface, accounts and cloud sync, the hosted service backend and its model-served endpoints (live prompting, mock-interview scoring, one-pass workspace generation), and the brand assets. Those belong to the official product. The `mock-interview` skill still runs a full mock round through your own agent.
 
 ## Privacy
 

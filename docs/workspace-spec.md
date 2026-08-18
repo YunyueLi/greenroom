@@ -1,6 +1,6 @@
 # Greenroom 工作台数据契约（workspace spec）
 
-工作台（workspace）是一个**属于你自己的本地文件夹**，存放一次求职周期的全部备战材料。所有文件都是纯 Markdown：人能直接读写，skills 往里生成内容，任何按本契约实现的客户端直接解析渲染，实时提词工具按同一格式取数。官方产品 [greenroom.ungetsu.net](https://greenroom.ungetsu.net/) 是其中一个实现，本文件是任何人都可以照着做的公开契约。
+工作台（workspace）是一个**属于你自己的本地文件夹**，存放一次求职周期的全部备战材料。所有文件都是纯 Markdown：人能直接读写，skills 往里生成内容，任何按本契约实现的客户端直接解析渲染。官方产品 [greenroom.ungetsu.net](https://greenroom.ungetsu.net/) 是其中一个实现，本文件是任何人都可以照着做的公开契约。
 
 设计原则：
 
@@ -113,7 +113,7 @@ updated: 2026-06-10
 ---
 ```
 
-正文：JD 原文（保留原话，拆解放 intel.md）。可选「## 时间线」区块记录岗位进程，每行 `- YYYY.MM.DD 事件`（投递 / 一面 / offer…）——客户端在岗位页渲染成事件流、总览卡显示最新一条；/api/setup 建档时写入首条，后续轮次由 debrief 回写或手动补。两个 logo 字段都不填则显示公司名首字母章；注意 `domain:` 模式会向 Google 的 favicon 服务发起该域名的图片请求（不含任何个人数据，介意则留空或自备 `logo:` URL）。
+正文：JD 原文（保留原话，拆解放 intel.md）。可选「## 时间线」区块记录岗位进程，每行 `- YYYY.MM.DD 事件`（投递 / 一面 / offer…）——客户端在岗位页渲染成事件流、总览卡显示最新一条；首条在 greenroom skill 建档时写入，后续轮次由 debrief 回写或手动补。两个 logo 字段都不填则显示公司名首字母章；注意 `domain:` 模式会向 Google 的 favicon 服务发起该域名的图片请求（不含任何个人数据，介意则留空或自备 `logo:` URL）。
 
 ### jobs/<slug>/intel.md（情报）
 
@@ -174,19 +174,19 @@ mock-interview skill 输出：逐题问答记录 + 评分（结构 / 证据密�
 
 ## 工具取数约定
 
-**客户端直连（免选文件夹）**：本地服务暴露两个只读端点，客户端启动时自动探测（先同源，再 `localStorage` 里记住的后端，最后 `http://127.0.0.1:8765`）：
+**客户端直连（免选文件夹）**：本地服务暴露以下只读端点，客户端启动时自动探测（先同源，再 `localStorage` 里记住的后端，最后 `http://127.0.0.1:8765`）：
 
 - `GET /workspace/bundle` → `{root, files: {相对路径: md 全文}, assets: [pdf 等二进制相对路径]}`，每次请求实时读盘
 - `GET /workspace/file?path=<相对路径>` → 单文件原始字节（带 MIME），用于 pdf 原件等
+- `GET /config` → `{personas: {"<jobs 目录名>": "<公司 · 岗位>", ...}}`，由服务扫 `jobs/` 目录得出，客户端用它列岗位
+- `GET /api/resolve-logo?company=<名称>&domain=<域名>` → `{logo: "<图片直链或空串>"}`，便利端点、不属必需实现。它会按 App Store、目标站点图标、搜索引擎图标的顺序向外发起请求，取公开图片直链，隐私口径与本文件「公司 logo」一节一致
 
-仓库自带 `serve.py`（`python3 serve.py ~/my-greenroom`）实现了这两个端点，可以直接拿来当参考实现；自建提词后端按同样契约实现即可，一个端口同时提供工作台取数与提词接口。没有服务时客户端可以降级为拖拽 / 目录选择 / IndexedDB 句柄重连，解析仍全部在浏览器本地。
+响应头带 `Access-Control-Allow-Origin: *`；建议同时实现 `OPTIONS`（返回 204 与同样的 CORS 头），兼容带 JSON header 的客户端。
 
-**实时提词工具**按以下方式从工作台组装上下文，细节见 `docs/realtime-bridge.md`：
+仓库自带 `serve.py`（`python3 serve.py ~/my-greenroom`）实现了这些端点，可以直接拿来当参考实现；自建服务按同样契约实现即可。没有服务时客户端可以降级为拖拽 / 目录选择 / IndexedDB 句柄重连，解析仍全部在浏览器本地。
 
-1. **知识库** = jobs/<slug>/script.md 全文（逐字稿里每个数字已写定口径与出处）
-2. 可选第二段 = jobs/<slug>/intel.md（面试官信息与考题预测）
-3. 注入 system prompt：输出规则在前，逐字稿在后（取材库）；要求只用稿里出现过的数字，没有就提示别编
+把工作台接进自己程序的两种做法（HTTP 直读与直接读盘）见 `docs/realtime-bridge.md`。
 
 ## 隐私约定
 
-工作台目录**永远不要**放进公开仓库。本仓库只含 skills、岗位知识库、契约文档、参考后端和虚构示例（`examples/demo-workspace/`），不含任何真实个人数据。
+工作台目录**永远不要**放进公开仓库。本仓库只含 skills、岗位知识库、契约文档、取数参考服务和虚构示例（`examples/demo-workspace/`），不含任何真实个人数据。

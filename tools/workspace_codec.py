@@ -2,24 +2,21 @@
 # -*- coding: utf-8 -*-
 """greenroom workspace codec — markdown 工作台文件夹 ⇄ JSON 数据块 互转。
 
-为什么存在：未来「登录即用」的形态里，工作台不再是用户手搭、拖进来的文件夹，而是
-存在浏览器本地 / 免费 Supabase / 桌面 app 本地文件里的数据块（见
-00_项目说明/greenroom工作台_数据模型与存储架构_设计_2026.06.md）。markdown 文件夹降级成
-「底层存储 / 导出 / AI 工作格式」。这个 codec 是那座桥：把现有 spec 的 md 文件夹无损转成块、
-再转回来，是后续接 localStorage / Supabase / 桌面端的地基。
+为什么存在：docs/workspace-spec.md 规定的工作台是一个 md 文件夹。客户端要把它装进
+数据库、浏览器存储或者自己的应用，需要一个稳定的块结构；导出时又要能一字不差地还原
+成文件夹。这个 codec 就是两边的桥，任何按契约实现的客户端都可以拿去做导入导出。
 
 数据块模型（与 docs/workspace-spec.md 对齐）:
   blocks = {
     "profile": {profile, resume, storyBank},   # 核心身份块：简历+经历+档案，每个岗都取料
-    "library": [ {group, name, path, content} ],# 与 profile 分开（产品知识库是 app 内容、不入用户数据；
-                                                 #   这里只承载工作台里出现的资料文件）
+    "library": [ {group, name, path, content} ],# 工作台里出现的资料文件，与 profile 分开
     "jobs":    [ {slug, meta, job, intel, script, rounds[], extra[]} ],  # 一岗一块
     "extra":   [ {path, content} ],             # 未归类的顶层 md，绝不丢
-    "assets":  [ path ]                          # 二进制引用（pdf 等），只记路径不入块（网页版只存文本）
+    "assets":  [ path ]                          # 二进制引用（pdf 等），只记路径不入块
   }
 
 无损原则：每个槽位存**原始 md 全文**（frontmatter+正文原样），blocks→folder 字节级还原；
-meta 是从 job.md frontmatter 解析出来的便捷副本（给 DB/客户端快速展示），不作为回写真源。
+meta 是从 job.md frontmatter 解析出来的便捷副本（给客户端快速展示），不作为回写真源。
 
 用法:
   python3 tools/workspace_codec.py <workspace-dir>           # 跑 round-trip 自测并报告
@@ -36,7 +33,7 @@ JOB_META_KEYS = ("company", "role", "status", "source", "domain", "logo", "updat
 
 def split_frontmatter(raw):
     """返回 (fm: dict, body: str)。最小 YAML：顶部 --- 包裹的 key: value 平铺标量。
-    镜像 greenroom.html 的 splitFrontmatter：只认平铺标量，value 按第一个冒号切（兼容 URL）。"""
+    只认平铺标量，value 按第一个冒号切（兼容 URL）。"""
     if raw.startswith("---"):
         end = raw.find("\n---", 3)
         if end != -1:

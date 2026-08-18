@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "Greenroom · 候场 — interview prep skills, a knowledge base of 160+ roles, and an open Markdown workspace format",
-    "version": "0.40.1"
+    "version": "0.41.0"
   },
   "plugins": [
     {
       "name": "greenroom",
       "source": "./",
       "description": "Interview prep skills: job intel, story bank, verbatim scripts, industry briefs, mock interviews, debriefs. 面试准备技能包：岗位情报 / 经历库 / 逐字稿 / 行业通识 / 模拟面试 / 面后复盘。",
-      "version": "0.40.1",
+      "version": "0.41.0",
       "author": {
         "name": "Yunyue Li"
       },

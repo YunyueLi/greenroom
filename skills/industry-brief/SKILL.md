@@ -1,7 +1,7 @@
 ---
 name: industry-brief
 description: Generates industry and role reference reading (行业与岗位通识) for a target job — landscape, role expectations, must-know concepts, high-frequency interview topics, quotable viewpoints with sources — written to the workspace library/ folder. Use when the user asks for 行业通识 / 岗位认知 / 这个行业要懂什么 / 面这个方向需要补什么知识, or as step 4 of the greenroom full pipeline. Do NOT use for company-specific research (use job-intel) or answer scripts (use interview-script).
-license: MIT
+license: AGPL-3.0
 metadata:
   author: Yunyue Li
   version: "0.3.0"

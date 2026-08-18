@@ -1,7 +1,7 @@
 ---
 name: story-bank
 description: Mines the candidate's real experience into a reusable story bank — fact-based story cards with sourced numbers, repackaged per role type. Use when the user wants to organize their projects and achievements for interviews, says 整理项目经历 / 挖掘亮点 / 经历库 / 这段经历怎么讲 / 同一个项目怎么对不同岗位讲, or when interview-script lacks material to write from. Do NOT use for company research (use job-intel) or final verbatim answers (use interview-script).
-license: MIT
+license: AGPL-3.0
 metadata:
   author: Yunyue Li
   version: "0.1.0"

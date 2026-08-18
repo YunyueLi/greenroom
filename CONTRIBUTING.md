@@ -21,8 +21,9 @@ instead of a pull request.
 ## License
 
 By submitting a contribution, you agree that your contribution is licensed under
-the GNU Affero General Public License v3.0 unless a file explicitly states a
-different compatible license.
+the GNU Affero General Public License v3.0. Everything in this repository ships
+under that license, including the skills and their reference material; no file
+carries a separate license.
 
 You also confirm that you have the right to submit the contribution.
 
@@ -36,11 +37,12 @@ consistent with `examples/demo-workspace/`.
 ## Product Direction
 
 The public repository should remain useful on its own. The skills, the role
-knowledge base, the workspace contract, and the reference backend must keep
-working end to end without an account and without the hosted service. Hosted
-greenroom adds the product UI, managed accounts, cloud sync, hosted model
-access, and operational polish; the open project stays a complete, portable
-toolkit on its own terms.
+knowledge base, the workspace contract, and the reference read server must keep
+working end to end without an account, without an API key, and without the
+hosted service. Hosted greenroom adds the product UI, managed accounts, cloud
+sync, and everything that runs on a model — live prompting during the interview,
+the mock-interview and one-pass generation endpoints; the open project stays a
+complete, portable toolkit on its own terms.
 
 ## Brand
 

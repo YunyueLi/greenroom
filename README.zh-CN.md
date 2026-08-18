@@ -103,8 +103,8 @@ my-greenroom/
 | | |
 | --- | --- |
 | [`docs/workspace-spec.md`](docs/workspace-spec.md) | 目录结构、frontmatter、`script.md` 题卡格式、HTTP 取数端点 |
-| [`docs/realtime-bridge.md`](docs/realtime-bridge.md) | 实时提词与模拟面试后端的接口契约 |
-| [`serve.py`](serve.py) | 零依赖参考后端，只用 Python 标准库 |
+| [`docs/realtime-bridge.md`](docs/realtime-bridge.md) | 怎么把工作台接进你自己的工具：HTTP 直读，或者直接读盘 |
+| [`serve.py`](serve.py) | 工作台取数端点的零依赖参考实现，只用 Python 标准库 |
 
 ```bash
 git clone https://github.com/YunyueLi/greenroom.git
@@ -112,17 +112,17 @@ cd greenroom
 ./start.sh ~/my-greenroom      # 在 :8765 上把工作台开成 HTTP 接口
 ```
 
-读工作台不需要 API key。想解锁实时提词、模拟面试和一次生成，在 `.env` 里填一个 OpenAI 兼容的 key。
+读工作台不需要 API key，也不需要账号。本地服务只把工作台读出来，交给任何按契约实现的客户端。
 
 ## 线上版
 
-**[greenroom.ungetsu.net](https://greenroom.ungetsu.net/)** 是官方产品：完整界面、账号与云同步、托管模型能力、持续运维的正式部署。它读写的就是这里写明的同一套工作台格式，所以你照契约做的东西不会白做。
+**[greenroom.ungetsu.net](https://greenroom.ungetsu.net/)** 是官方产品：完整界面、账号与云同步、托管模型能力（面试中的实时提词、模拟面试、一次生成工作台）、持续运维的正式部署。它读写的就是这里写明的同一套工作台格式，所以你照契约做的东西不会白做。
 
 ## 这里有什么，没有什么
 
-**有的**，按 AGPL-3.0 授权：技能包、岗位知识库、工作台契约、参考后端、示例工作台。拿去跑、拿去改、拿去做兼容工具都可以。
+**有的**，按 AGPL-3.0 授权：技能包、岗位知识库、工作台契约、取数参考服务、示例工作台。拿去跑、拿去改、拿去做兼容工具都可以。
 
-**没有的**：产品界面、账号与云同步、托管服务端、品牌资产。这些属于官方产品。
+**没有的**：产品界面、账号与云同步、托管服务端及其模型端点（实时提词、模拟面试评分、一次生成工作台）、品牌资产。这些属于官方产品。`mock-interview` 技能包照旧可以在你自己的 agent 里跑完整一轮模拟面试。
 
 ## 隐私
 

@@ -1,11 +1,23 @@
 # Changelog
 
 All notable changes to the greenroom open layer — the skills, the role knowledge
-base, the workspace contract, and the reference backend. Versions track
+base, the workspace contract, and the reference read server. Versions track
 `.claude-plugin/plugin.json`.
 
 Product-layer history (the hosted interface, accounts and sync, the hosted
 service backend, brand assets) is kept with the product and is not tracked here.
+
+## v0.41.0 — 2026-08
+**Breaking — the model-served endpoints are withdrawn. The public repository is now a set of agent skills plus a data contract.** Anything that needs a model to run belongs to the hosted product, and running a model on a user's behalf was never the part of this project that anyone could pick up and reuse. What remains is that reusable layer: seven skills your own agent runs, a 27-group role knowledge base, the workspace contract, and a read-only reference server.
+
+- **Removed from `serve.py`:** `POST /api/answer` (live prompting), `POST /api/mock` (interviewer persona and coach report) and `POST /api/setup` (one-pass workspace generation), along with everything they needed to run; also `POST /api/ping` (model key liveness check) and `POST /api/fetch-jd`, the model key and model-name lookup, the upstream streaming proxy, and the BYOK request headers. No `POST` route remains, and no `.env` is read anywhere in this repository.
+- **Removed:** `.env.example`. `start.sh` no longer creates a `.env` or asks for a key, and `docs/realtime-bridge.md` no longer documents model configuration.
+- **`GET /config` now returns `{"personas": {...}}` only.** The `has_key` and `model` fields reported model state and are gone. A client that used `has_key` for capability detection will find the field missing; that is intended, since the open layer no longer advertises model access.
+- **Kept unchanged:** the workspace read endpoints `GET /workspace/bundle` and `GET /workspace/file`, plus `GET /api/resolve-logo`. Third-party clients read a workspace through these, and interoperability is the point of publishing a contract.
+- **`docs/realtime-bridge.md` is now a read-integration guide**, retitled 工作台取数对接: the two ways to read a workspace, the CORS requirement, and the boundary. The live-prompting system prompt, the endpoint protocols and the prompt-engineering notes are gone. `docs/workspace-spec.md` absorbed the `/config` shape and the CORS rule, and dropped its own summary of how a live prompter assembles context.
+- **The skills are untouched.** `mock-interview` still plays the interviewer with pressure follow-ups and scores the round; `interview-script` still writes speakable answers. They run through your own agent, which is what a skill is — only the server endpoints that happened to share those names are gone.
+- **Earlier releases stand.** Every version through v0.40.1 was published under AGPL-3.0, and this change does not retract a grant already made. It governs what ships from here on.
+- **License framing corrected.** The seven `SKILL.md` files still carried `license: MIT` in their frontmatter while `LICENSE`, `plugin.json` and `marketplace.json` all said AGPL-3.0. v0.40.0 claimed the framing was unified and missed these seven; they now read AGPL-3.0, and `CONTRIBUTING.md` no longer allows a per-file exception. This corrects a stale declaration rather than relicensing anything: copies already obtained under the earlier declaration keep the terms they were given.
 
 ## v0.40.0 — 2026-08
 **The public repository is now the skills-and-contract layer; the interface belongs to the product.** The single-file web console, its landing page and routing config, the Cloudflare Worker backend, the cloud-sync docs and the brand assets were all withdrawn from this repository. What remains is the layer that is useful to anyone on its own terms: seven agent skills, a 27-role knowledge base, the workspace contract, and a zero-dependency reference backend.

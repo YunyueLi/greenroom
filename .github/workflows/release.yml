@@ -37,7 +37,7 @@ jobs:
           mkdir -p dist
           STAGE="$(mktemp -d)"
           mkdir -p "$STAGE/greenroom"
-          cp serve.py start.sh Makefile .env.example README.md README.zh-CN.md LICENSE "$STAGE/greenroom/"
+          cp serve.py start.sh Makefile README.md README.zh-CN.md LICENSE "$STAGE/greenroom/"
           cp -R skills docs knowledge examples tools .claude-plugin "$STAGE/greenroom/"
           ( cd "$STAGE" && zip -qr "$GITHUB_WORKSPACE/dist/greenroom-bundle.zip" greenroom )
           ls -lh dist

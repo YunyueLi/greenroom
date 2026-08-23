@@ -77,12 +77,12 @@ flowchart LR
 ## 你要的是完整产品，还是开放内核？
 
 > [!IMPORTANT]
-> **这个仓库是 greenroom core，不是可本地部署的 Greenroom 产品版。** 开源层提供 Skills、公共知识库、工作台契约和只读参考服务；完整产品界面、账号与同步、托管模型能力、额度与支付只由[官方产品](https://greenroom.ungetsu.net/)提供。
+> **这个仓库是 greenroom core，不是可本地部署的 Greenroom 产品版。** 开源层提供 Skills、公共知识库、可迁移的 Markdown 工作台契约、示例和文件格式工具，不提供本地服务或产品后端；完整产品界面、账号与同步、托管模型能力、额度与支付只由[官方产品](https://greenroom.ungetsu.net/)提供。
 
 | | **官方 Greenroom** | **greenroom core** |
 | --- | --- | --- |
 | **适合你，如果** | 想登录即用，完成从简历、岗位到模拟和临场的一站式流程 | 想在自己的 Agent 中运行方法论，或开发兼容工具 |
-| **包含** | 完整产品 UI、账号同步、托管模型、实战提词、产品级模拟面试、持续运维 | 7 个 Skills、163 个岗位条目、Markdown 契约、示例工作台、只读参考服务 |
+| **包含** | 完整产品 UI、账号同步、托管模型、实战提词、产品级模拟面试、持续运维 | 7 个 Skills、163 个岗位条目、Markdown 契约、示例工作台和文件格式工具 |
 | **运行位置** | 官方托管服务；**不提供自托管版** | Skills 运行在你的 Agent 中；工作台文件保存在你的电脑上 |
 | **许可** | 产品层保留所有权利 | Core 按 AGPL-3.0 开源 |
 | **开始** | [打开产品](https://greenroom.ungetsu.net/) | [安装 Skills](#30-秒让-agent-开始工作) |
@@ -165,22 +165,13 @@ my-greenroom/
 
 ## 在开放契约上开发
 
-工作台格式是公开契约，不是 Greenroom 的内部实现细节。任何兼容工具都可以直接读文件，或通过本仓库的参考服务读取同一份数据。
+工作台格式是公开契约，不是 Greenroom 的内部实现细节。兼容工具应读取由使用者明确选择的文件；本仓库不提供 HTTP 运行时，也不会自动探测 localhost。
 
 | 资源 | 用途 |
 | --- | --- |
-| [`docs/workspace-spec.md`](docs/workspace-spec.md) | 目录、frontmatter、题卡格式与 HTTP 取数约定 |
+| [`docs/workspace-spec.md`](docs/workspace-spec.md) | 目录、frontmatter、题卡格式与文件读取规则 |
 | [`docs/realtime-bridge.md`](docs/realtime-bridge.md) | 将工作台接入阅读器、检索工具或自有客户端 |
-| [`serve.py`](serve.py) | 基于 Python 标准库的只读参考服务 |
 | [`tools/workspace_codec.py`](tools/workspace_codec.py) | Markdown 工作台与结构化数据之间的转换工具 |
-
-```bash
-git clone https://github.com/YunyueLi/greenroom.git
-cd greenroom
-./start.sh ~/my-greenroom
-```
-
-参考服务只监听 `127.0.0.1:8765`，提供工作台读取端点；它没有产品界面、账号系统或模型生成接口，也不需要 API key。
 
 ## 开源边界
 
@@ -189,7 +180,7 @@ cd greenroom
 | Agent Skills 与提示方法 | 官方产品 UI 的实现与品牌资产 |
 | 公开岗位知识库 | 账号、云同步、额度和支付 |
 | Markdown 工作台契约 | 托管模型代理与产品服务端 |
-| 只读参考服务和兼容工具 | 实战提词、产品级模拟评分和一键生成的服务端点 |
+| 供阅读器与编辑器使用的文件格式工具 | 任何本地或托管的 Greenroom 产品后端 |
 | 虚构示例工作台 | 可部署或可转售的 Greenroom 产品版 |
 
 你可以运行、修改、贡献 greenroom core，也可以基于公开契约开发兼容工具；但不能把这个仓库描述成官方 Greenroom 产品或官方自托管版。品牌使用规则见 [`TRADEMARK.md`](TRADEMARK.md)。README 中的产品截图仅用于说明官方产品，不代表截图所示 UI 或服务按 AGPL-3.0 开源；详见[素材说明](docs/assets/readme/README.md)。

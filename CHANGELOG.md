@@ -1,11 +1,25 @@
 # Changelog
 
 All notable changes to the greenroom open layer — the skills, the role knowledge
-base, the workspace contract, and the reference read server. Versions track
+base, the workspace contract, and compatible file-format tools. Versions track
 `.claude-plugin/plugin.json`.
 
 Product-layer history (the hosted interface, accounts and sync, the hosted
 service backend, brand assets) is kept with the product and is not tracked here.
+
+## v0.42.0 — 2026-08
+**Breaking — the open layer no longer ships a local HTTP runtime.** The public
+contract remains a portable Markdown file format; compatible tools read files
+chosen by the user instead of probing a loopback server.
+
+- **Removed:** `serve.py`, `start.sh`, and the server-only `Makefile` targets.
+- **Removed from the release bundle:** the local server and launcher.
+- **Contract narrowed:** `docs/workspace-spec.md` now specifies direct file
+  access only; `docs/realtime-bridge.md` shows filesystem integration without
+  HTTP endpoints, wildcard CORS, or localhost auto-discovery.
+- **Product boundary clarified:** the repository contains Skills, public role
+  knowledge, the Markdown contract, examples, and compatible file tools. It is
+  not a local or self-hosted edition of Greenroom.
 
 ## v0.41.0 — 2026-08
 **Breaking — the model-served endpoints are withdrawn. The public repository is now a set of agent skills plus a data contract.** Anything that needs a model to run belongs to the hosted product, and running a model on a user's behalf was never the part of this project that anyone could pick up and reuse. What remains is that reusable layer: seven skills your own agent runs, a 27-group role knowledge base, the workspace contract, and a read-only reference server.

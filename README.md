@@ -77,12 +77,12 @@ Live assist catches the question, gives you an opening line, supporting points, 
 ## Do you want the complete product or the open core?
 
 > [!IMPORTANT]
-> **This repository is greenroom core, not a locally deployable edition of the Greenroom product.** The open layer provides Skills, public knowledge, the workspace contract, and a read-only reference server. The full product UI, accounts and sync, hosted model features, metering, and payments are available only through the [official product](https://greenroom.ungetsu.net/).
+> **This repository is greenroom core, not a locally deployable edition of the Greenroom product.** The open layer provides Skills, public knowledge, a portable Markdown workspace contract, examples, and file-format tools. It ships no local server or product backend. The full product UI, accounts and sync, hosted model features, metering, and payments are available only through the [official product](https://greenroom.ungetsu.net/).
 
 | | **Official Greenroom** | **greenroom core** |
 | --- | --- | --- |
 | **Choose it when** | You want a ready-to-use journey from resume and opportunities to mock rounds and live interviews | You want to run the method inside your own agent or build compatible tools |
-| **Includes** | Full product UI, account sync, hosted models, live prompting, product-grade mock interviews, ongoing operations | 7 Skills, 163 role entries, the Markdown contract, a demo workspace, a read-only reference server |
+| **Includes** | Full product UI, account sync, hosted models, live prompting, product-grade mock interviews, ongoing operations | 7 Skills, 163 role entries, the Markdown contract, a demo workspace, and file-format tools |
 | **Runs** | On the official managed service; **there is no self-hosted edition** | Skills run in your agent; workspace files live on your computer |
 | **License** | Product layer: all rights reserved | Core: AGPL-3.0 |
 | **Start** | [Open the product](https://greenroom.ungetsu.net/) | [Install the Skills](#put-your-agent-to-work-in-30-seconds) |
@@ -165,22 +165,13 @@ The knowledge base contains no candidate data. `industry-brief` checks it before
 
 ## Build on the open contract
 
-The workspace format is a published contract, not a Greenroom implementation detail. Compatible tools can read the files directly or use the repository's reference server to read the same data.
+The workspace format is a published contract, not a Greenroom implementation detail. Compatible tools read files explicitly selected by the user; the repository does not ship an HTTP runtime or probe localhost.
 
 | Resource | Purpose |
 | --- | --- |
-| [`docs/workspace-spec.md`](docs/workspace-spec.md) | Directory layout, frontmatter, question-card format, and HTTP read contract |
+| [`docs/workspace-spec.md`](docs/workspace-spec.md) | Directory layout, frontmatter, question-card format, and file-reading rules |
 | [`docs/realtime-bridge.md`](docs/realtime-bridge.md) | Connect the workspace to a reader, retrieval tool, or your own client |
-| [`serve.py`](serve.py) | Read-only reference server built on the Python standard library |
 | [`tools/workspace_codec.py`](tools/workspace_codec.py) | Convert between Markdown workspaces and structured data |
-
-```bash
-git clone https://github.com/YunyueLi/greenroom.git
-cd greenroom
-./start.sh ~/my-greenroom
-```
-
-The reference server listens only on `127.0.0.1:8765` and exposes workspace read endpoints. It has no product UI, account system, or model-generation endpoint, and needs no API key.
 
 ## Open-core boundary
 
@@ -189,7 +180,7 @@ The reference server listens only on `127.0.0.1:8765` and exposes workspace read
 | Agent Skills and preparation methods | The official product UI implementation or brand assets |
 | The public role knowledge base | Accounts, cloud sync, metering, or payments |
 | The Markdown workspace contract | The hosted model proxy or product backend |
-| A read-only reference server and compatibility tools | Server endpoints for live prompting, product-grade mock scoring, or one-pass generation |
+| File-format tools for compatible readers and editors | Any local or hosted Greenroom product backend |
 | A fictional demo workspace | A deployable or resellable edition of the Greenroom product |
 
 You may run, modify, and contribute to greenroom core, and build compatible tools on the published contract. You may not present this repository as the official Greenroom product or an official self-hosted edition. See [`TRADEMARK.md`](TRADEMARK.md) for the brand rules. Product screenshots in this README document the official product only; they do not license the depicted UI or services under AGPL-3.0. See the [asset notice](docs/assets/readme/README.md).

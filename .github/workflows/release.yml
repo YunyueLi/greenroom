@@ -18,6 +18,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: 校验开放层边界
+        run: |
+          for retired in serve.py start.sh Makefile; do
+            if [ -e "$retired" ]; then
+              echo "不应重新发布本地 HTTP 运行时：$retired" >&2
+              exit 1
+            fi
+          done
+          if grep -REn 'localhost:8765|127\.0\.0\.1:8765|/workspace/bundle|/workspace/file' \
+            README.md README.zh-CN.md docs CLAUDE.md CONTRIBUTING.md; then
+            echo "活动文档重新出现了已退役的本地 HTTP 契约" >&2
+            exit 1
+          fi
+
       - name: 解析版本与 tag
         id: ver
         run: |
@@ -37,7 +51,7 @@ jobs:
           mkdir -p dist
           STAGE="$(mktemp -d)"
           mkdir -p "$STAGE/greenroom"
-          cp serve.py start.sh Makefile README.md README.zh-CN.md LICENSE "$STAGE/greenroom/"
+          cp README.md README.zh-CN.md LICENSE "$STAGE/greenroom/"
           cp -R skills docs knowledge examples tools .claude-plugin "$STAGE/greenroom/"
           ( cd "$STAGE" && zip -qr "$GITHUB_WORKSPACE/dist/greenroom-bundle.zip" greenroom )
           ls -lh dist

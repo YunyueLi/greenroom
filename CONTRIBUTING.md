@@ -8,7 +8,6 @@ portable, and trustworthy.
 
 - `skills/` workflow improvements
 - `docs/workspace-spec.md` and compatible workspace tooling
-- `serve.py`, `start.sh`, and local runtime fixes
 - `knowledge/` community role encyclopedia entries based on public,
   non-confidential sources
 - `examples/demo-workspace/` fictional demo data
@@ -37,12 +36,13 @@ consistent with `examples/demo-workspace/`.
 ## Product Direction
 
 The public repository should remain useful on its own. The skills, the role
-knowledge base, the workspace contract, and the reference read server must keep
-working end to end without an account, without an API key, and without the
-hosted service. Hosted greenroom adds the product UI, managed accounts, cloud
-sync, and everything that runs on a model — live prompting during the interview,
-the mock-interview and one-pass generation endpoints; the open project stays a
-complete, portable toolkit on its own terms.
+knowledge base, the workspace contract, and file-format tools must keep working
+without an account, without an API key, and without the hosted service. The
+repository does not ship a local HTTP runtime or a deployable Greenroom product.
+Hosted greenroom adds the product UI, managed accounts, cloud sync, and
+everything that runs on a model — live prompting during the interview, the
+mock-interview and one-pass generation endpoints; the open project stays a
+portable toolkit on its own terms.
 
 ## Brand
 

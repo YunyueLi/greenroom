@@ -1,33 +1,83 @@
 <div align="center">
 
 <a href="https://greenroom.ungetsu.net/">
-  <img src="https://greenroom.ungetsu.net/icon-512.png" width="96" alt="greenroom icon">
+  <img src="https://greenroom.ungetsu.net/icon-512.png" width="88" alt="greenroom icon">
 </a>
 
 # greenroom · 候场
 
-**Interview prep that ends in words you can actually say.**
+**Turn a scattered job hunt into one connected system—from your resume to the offer.**
 
-Seven Agent Skills, 163 public role entries, and an open Markdown workspace contract.<br>
-Give an agent your resume and target JD; get role intel, a sourced story bank, speakable scripts, mock rounds, and debriefs.
+Greenroom does not leave you in an empty chat box. It tracks opportunities, checks the facts, shapes your stories, rehearses the pressure,<br>
+and carries answers you can actually say into the interview itself.
 
-[![Official app](https://img.shields.io/badge/official_app-greenroom.ungetsu.net-164734?style=flat-square)](https://greenroom.ungetsu.net/)
-[![License: AGPL-3.0](https://img.shields.io/badge/open_source-AGPL--3.0-111111?style=flat-square)](LICENSE)
-[![Release](https://img.shields.io/github/v/release/YunyueLi/greenroom?style=flat-square&color=2f7d52&label=release)](https://github.com/YunyueLi/greenroom/releases)
-[![中文](https://img.shields.io/badge/README-中文-111111?style=flat-square)](README.zh-CN.md)
+[![Official app](https://img.shields.io/badge/Open_Greenroom-greenroom.ungetsu.net-164734?style=for-the-badge)](https://greenroom.ungetsu.net/)
+[![License: AGPL-3.0](https://img.shields.io/badge/open_core-AGPL--3.0-111111?style=for-the-badge)](LICENSE)
 
-[Open the official app](https://greenroom.ungetsu.net/) · [Start in 30 seconds](#start-in-30-seconds) · [Explore the demo](examples/demo-workspace/) · [Read the spec](docs/workspace-spec.md)
+**[Start with your resume →](https://greenroom.ungetsu.net/)** · [Watch the live demo](https://greenroom.ungetsu.net/#work) · [Install core in 30 seconds](#put-your-agent-to-work-in-30-seconds) · [中文](README.zh-CN.md)
 
 </div>
 
 <a href="https://greenroom.ungetsu.net/">
-  <img src="https://greenroom.ungetsu.net/og.png" width="880" alt="greenroom — prepare every word before you go on stage">
+  <img src="docs/assets/readme/product-overview-en.webp" width="100%" alt="Official Greenroom product: the job-search workspace and second-screen live prompts">
 </a>
 
-> [!IMPORTANT]
-> **This repository is greenroom core, not a self-hostable edition of the Greenroom product.** The open layer provides Skills, public knowledge, the workspace contract, and a read-only reference server. The full product UI, accounts and sync, hosted model features, metering, and payments are available only through the [official product](https://greenroom.ungetsu.net/).
+<p align="center"><sub>Not a concept render. This is the running Greenroom product with fictional demo data: the full job-search workspace on the left and private second-screen prompts on the right.</sub></p>
 
-## Choose your route
+| **Official product** | **Open core** |
+| :--- | :--- |
+| 1,443 role profiles across 43 industries; one workspace from discovery to the live interview | 7 Agent Skills and 163 deep role entries; an open Markdown workspace contract |
+
+## The hard part is not getting advice. It is making every step connect.
+
+Saved roles live in a spreadsheet. Resume edits live in a document. Interview answers disappear into chat history. Every tool helps a little, but none of them knows what you should do next.
+
+Greenroom connects the loop. Role judgment changes the resume. Resume facts become reusable stories. Stories become speakable answers. Mock and real-interview feedback flows back into the next round.
+
+```mermaid
+flowchart LR
+    A["Resume"] --> B["Discover"]
+    B --> C["Pipeline"]
+    C --> D["Prepare"]
+    D --> E["Mock"]
+    E --> F["Live interview"]
+    F --> G["Debrief"]
+    G --> D
+```
+
+## See the opportunity before you spend the time
+
+### Every opportunity gets a stage, a judgment, and a next move
+
+<a href="https://greenroom.ungetsu.net/">
+  <img src="docs/assets/readme/opportunity-pipeline-en.webp" width="100%" alt="Greenroom opportunity pipeline with fit, stage, next action, and due date">
+</a>
+
+Fit, stage, next action, deadline, and risk signals sit in one view. You are no longer maintaining a spreadsheet that cannot remind you; you are running a pipeline that can move toward an offer.
+
+### Learn how the role screens people before you prepare
+
+<a href="https://greenroom.ungetsu.net/">
+  <img src="docs/assets/readme/role-atlas-en.webp" width="100%" alt="Greenroom role atlas with role families and screening logic">
+</a>
+
+The role atlas is not a list of titles. It shows what each role rewards, where interviewers push, and which experience counts as evidence—so you can see the gap before you apply.
+
+### When the interview starts, your preparation stays with you
+
+<a href="https://greenroom.ungetsu.net/">
+  <img src="docs/assets/readme/live-assistant-en.webp" width="100%" alt="Greenroom live assistant with interview selection, listening mode, and second-screen prompts">
+</a>
+
+Live assist catches the question, gives you an opening line, supporting points, and evidence, and can move the prompts to a second display. The prompts stay on your screen and out of the screen you share.
+
+> **Want the complete workflow above, ready to use?** [Open Greenroom and start with your resume →](https://greenroom.ungetsu.net/)<br>
+> **Want the method inside your own agent?** Keep reading and install greenroom core.
+
+## Do you want the complete product or the open core?
+
+> [!IMPORTANT]
+> **This repository is greenroom core, not a locally deployable edition of the Greenroom product.** The open layer provides Skills, public knowledge, the workspace contract, and a read-only reference server. The full product UI, accounts and sync, hosted model features, metering, and payments are available only through the [official product](https://greenroom.ungetsu.net/).
 
 | | **Official Greenroom** | **greenroom core** |
 | --- | --- | --- |
@@ -35,9 +85,9 @@ Give an agent your resume and target JD; get role intel, a sourced story bank, s
 | **Includes** | Full product UI, account sync, hosted models, live prompting, product-grade mock interviews, ongoing operations | 7 Skills, 163 role entries, the Markdown contract, a demo workspace, a read-only reference server |
 | **Runs** | On the official managed service; **there is no self-hosted edition** | Skills run in your agent; workspace files live on your computer |
 | **License** | Product layer: all rights reserved | Core: AGPL-3.0 |
-| **Start** | [Open the product](https://greenroom.ungetsu.net/) | [Install the Skills](#start-in-30-seconds) |
+| **Start** | [Open the product](https://greenroom.ungetsu.net/) | [Install the Skills](#put-your-agent-to-work-in-30-seconds) |
 
-## Start in 30 seconds
+## Put your agent to work in 30 seconds
 
 Install the versioned plugin in Claude Code:
 
@@ -62,28 +112,9 @@ Then tell your agent:
 > Turn these three stories into answers I can say out loud.<br>
 > Run a second-round mock interview, then give me a coach report.
 
-## From resume to the next round
+## Why the output survives a real interview
 
-```mermaid
-flowchart LR
-    A["Resume + target JD"] --> B["Role intel"]
-    A --> C["Story bank"]
-    B --> D["Industry brief"]
-    C --> E["Speakable scripts"]
-    D --> E
-    E --> F["Mock interview"]
-    F --> G["Coach report"]
-    G --> H["Next-round prep"]
-    E --> I["Real interview"]
-    I --> J["Debrief"]
-    J --> H
-```
-
-greenroom does not leave its work scattered across chat history. Role changes, mock results, and post-interview notes flow back into the same workspace and become input for the next round.
-
-## Why greenroom
-
-**Answers, not outlines.** Most prep tools hand you bullet points and leave the hardest step — turning them into complete sentences under pressure — to you. greenroom writes first-person answers meant to be spoken out loud.
+**Answers, not outlines.** Most prep tools hand you bullet points and leave the hardest step—turning them into complete sentences under pressure—to you. greenroom writes first-person answers meant to be spoken out loud.
 
 **Numbers with definitions; judgments with evidence.** Every important figure in a story should record its scope and source. When an interviewer follows up, you can defend a fact you checked instead of improvising one.
 
@@ -97,7 +128,7 @@ Self-service resolution rose from 31% to 52%, while support staffing cost fell 1
 
 **Files you own.** Resumes, roles, story cards, scripts, and debriefs are plain Markdown under a published contract. They are inspectable and portable without a proprietary export format.
 
-## Seven Skills
+## Seven Skills, one continuous workflow
 
 | Skill | Output |
 | --- | --- |
@@ -126,7 +157,7 @@ my-greenroom/
 
 [`examples/demo-workspace/`](examples/demo-workspace/) is a complete example: the format and workflow are real; the people and companies are fictional.
 
-## The public role knowledge base
+## 163 public role entries, so you do not start cold
 
 [`knowledge/`](knowledge/) currently contains **163 role entries** across **27 function and industry groups**. Entries are organized around real interview judgment: mental models, benchmarks, canonical cases, strong-versus-weak candidate signals, frequent questions, and follow-up chains.
 
@@ -155,13 +186,13 @@ The reference server listens only on `127.0.0.1:8765` and exposes workspace read
 
 | **This repository includes** | **This repository does not include** |
 | --- | --- |
-| Agent Skills and preparation methods | The official product UI or brand assets |
+| Agent Skills and preparation methods | The official product UI implementation or brand assets |
 | The public role knowledge base | Accounts, cloud sync, metering, or payments |
 | The Markdown workspace contract | The hosted model proxy or product backend |
 | A read-only reference server and compatibility tools | Server endpoints for live prompting, product-grade mock scoring, or one-pass generation |
 | A fictional demo workspace | A deployable or resellable edition of the Greenroom product |
 
-You may run, modify, and contribute to greenroom core, and build compatible tools on the published contract. You may not present this repository as the official Greenroom product or an official self-hosted edition. See [`TRADEMARK.md`](TRADEMARK.md) for the brand rules.
+You may run, modify, and contribute to greenroom core, and build compatible tools on the published contract. You may not present this repository as the official Greenroom product or an official self-hosted edition. See [`TRADEMARK.md`](TRADEMARK.md) for the brand rules. Product screenshots in this README document the official product only; they do not license the depicted UI or services under AGPL-3.0. See the [asset notice](docs/assets/readme/README.md).
 
 ## Privacy
 
@@ -177,8 +208,10 @@ greenroom Community Edition is licensed under the [GNU Affero General Public Lic
 
 <div align="center">
 
-**Prepare every word before you go on stage.**
+**Do not start your next interview from an empty chat box.**
 
-[Open the official app](https://greenroom.ungetsu.net/) · [Install greenroom core](#start-in-30-seconds) · [Contribute](CONTRIBUTING.md)
+[**Open Greenroom and start with your resume →**](https://greenroom.ungetsu.net/)
+
+[Install greenroom core](#put-your-agent-to-work-in-30-seconds) · [Explore the demo](examples/demo-workspace/) · [Contribute](CONTRIBUTING.md)
 
 </div>

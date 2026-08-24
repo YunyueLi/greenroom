@@ -1,0 +1,84 @@
+name: Release
+
+# 打 tag（v*）即自动发布：打包 skills + 知识库 + 契约 → 创建 GitHub Release。
+# 也可在 Actions 页手动触发（workflow_dispatch），版本取自 .claude-plugin/plugin.json。
+# 本流程只发布 GitHub Release，不负责官方 hosted 部署。
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 校验开放层边界
+        run: |
+          for unsupported in serve.py start.sh Makefile; do
+            if [ -e "$unsupported" ]; then
+              echo "发行包不应包含本地 HTTP 运行时：$unsupported" >&2
+              exit 1
+            fi
+          done
+          if grep -REn 'localhost:8765|127\.0\.0\.1:8765|/workspace/bundle|/workspace/file' \
+            README.md README.zh-CN.md docs CLAUDE.md CONTRIBUTING.md; then
+            echo "活动文档不应引用本地 HTTP 契约" >&2
+            exit 1
+          fi
+
+      - name: 解析版本与 tag
+        id: ver
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            TAG="${GITHUB_REF_NAME}"
+            VER="${TAG#v}"
+          else
+            VER="$(grep -m1 '"version"' .claude-plugin/plugin.json | sed -E 's/.*"version" *: *"([^"]+)".*/\1/')"
+            TAG="v${VER}"
+          fi
+          echo "ver=$VER" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "发布 $TAG（版本 $VER）"
+
+      - name: 打包产物（bundle.zip）
+        run: |
+          mkdir -p dist
+          STAGE="$(mktemp -d)"
+          mkdir -p "$STAGE/greenroom"
+          cp README.md README.zh-CN.md LICENSE "$STAGE/greenroom/"
+          cp -R skills docs knowledge examples tools .claude-plugin "$STAGE/greenroom/"
+          ( cd "$STAGE" && zip -qr "$GITHUB_WORKSPACE/dist/greenroom-bundle.zip" greenroom )
+          ls -lh dist
+
+      - name: 从 CHANGELOG 提取本版说明
+        run: |
+          awk -v ver="## v${{ steps.ver.outputs.ver }}" '
+            $0 ~ "^" ver {f=1}
+            f && /^## v/ && $0 !~ ver {exit}
+            f
+          ' CHANGELOG.md > dist/notes.md
+          if [ ! -s dist/notes.md ]; then
+            echo "greenroom ${{ steps.ver.outputs.tag }}" > dist/notes.md
+          fi
+          echo "--- notes ---"; cat dist/notes.md
+
+      - name: 发布 GitHub Release（幂等，可重跑）
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${{ steps.ver.outputs.tag }}"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" dist/greenroom-bundle.zip --clobber
+            gh release edit "$TAG" --title "greenroom $TAG" --notes-file dist/notes.md
+          else
+            gh release create "$TAG" \
+              dist/greenroom-bundle.zip \
+              --title "greenroom $TAG" \
+              --notes-file dist/notes.md
+          fi

@@ -9,8 +9,8 @@ Greenroom Community Edition 提供面试准备 Skills、岗位知识库、工作
 - **格式即接口**：`workspace-spec.md` 里 script.md 的题卡标记（体例行、`**口径**` 等折叠区，逐字稿里每个数字写定口径与出处）被两处同时依赖：skills 的输出模板，以及任何按契约实现的客户端解析器。改任何一处必须两处同步；契约是对外承诺，改动要当成破坏性变更来对待。
 - **不提供本地运行时**：本仓库不包含 HTTP 服务、回环端口或可部署产品后端。兼容工具应让使用者显式选择工作台目录，并直接按 `docs/workspace-spec.md` 读取 Markdown 文件；不要重新加入自动探测 localhost、通配 CORS 或后台服务。
 - **契约文档不描述特定界面**：workspace-spec 与 realtime-bridge 面向所有实现者，写「客户端」而不是某个具体产品的界面；需要举例时指向官方产品的网址，不要指向本仓库里不存在的文件。这两份文档都不写提示词、不写模型参数。
-- **中文文案写作**：skills 与文档里的中文遵守 `skills/interview-script/references/style-zh.md` 的禁令（它管的是逐字稿，但「不是…而是 / 恰恰 / 这正是 / 值得一提」这类句式在本仓库所有中文文案里同样禁用）。
-- **skill 规范**：frontmatter 用开放标准字段（name / description / license / metadata），name 与目录名一致；description 第三人称、带触发词、带负面排除；SKILL.md 正文 500 行以内，深层内容放 references/。发布前 `claude plugin validate . --strict`（如 CLI 可用）。
+- **中文文案写作**：默认自然、专业、清晰。写逐字稿时按需参考对应语言风格文件；用户明确的表达偏好优先于默认风格，事实真实性与格式契约继续保留。
+- **skill 规范**：frontmatter 用开放标准字段（name / description / license / metadata），name 与目录名一致；description 简短说明用途与触发边界，仅在确有混淆时写排除条件；正文保留必要约束，多流程细节按需放入 references/。发布前 `claude plugin validate . --strict`（如 CLI 可用）。
 - **版本**：发布改动时同步更新 `.claude-plugin/plugin.json` 和 `marketplace.json` 的 version。
 
 ## 本地验证

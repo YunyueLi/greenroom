@@ -1,10 +1,10 @@
 ---
 name: mock-interview
-description: Runs a realistic mock interview in chat — builds an interviewer persona from the intel file, asks one question at a time with pressure follow-up chains, then scores the candidate on structured delivery, evidence density, role fit, follow-up resilience and recitation-smell, writing a report to the workspace. Use when the user wants practice, says 模拟面试 / 陪我练一下 / 当一回面试官 / 压力面 / mock interview, or when an interview is within 48 hours and the script is ready. Do NOT use for writing answers (interview-script) or reviewing a real past interview (debrief).
+description: Run an interactive practice interview with follow-up questions and a coaching report when the user requests rehearsal.
 license: AGPL-3.0
 metadata:
   author: Yunyue Li
-  version: "0.1.0"
+  version: "0.1.1"
 ---
 
 # mock-interview · 模拟面试

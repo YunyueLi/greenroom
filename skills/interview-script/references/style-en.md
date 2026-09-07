@@ -1,6 +1,6 @@
-# English Script Style Rules
+# Default English Script Style
 
-The same discipline as style-zh.md, adapted for English-language interviews. The goal is identical: a script that sounds like the candidate on their best day, spoken aloud — never like an essay.
+Use these defaults for English interview scripts when the user has not specified another style. Read the sections relevant to the current answer. Explicit user preferences take precedence over default tone, structure and wording; factual accuracy, sourced numbers and the workspace format remain required.
 
 ## 1. Stance
 

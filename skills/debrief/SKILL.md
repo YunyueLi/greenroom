@@ -1,10 +1,10 @@
 ---
 name: debrief
-description: Post-interview review — reconstructs the Q&A from transcript or memory, captures interviewer intel and next-round forecasts, and turns the round into a revision list for the script. Use when the user says they just finished an interview, 刚面完 / 复盘一下 / 面试录音转文字给你 / 这轮被问了什么, or pastes an interview transcript or recollection. Do NOT use for practice sessions (mock-interview) or pre-interview research (job-intel).
+description: Review a completed real interview from a transcript or recollection and identify revisions for the next round.
 license: AGPL-3.0
 metadata:
   author: Yunyue Li
-  version: "0.1.0"
+  version: "0.1.1"
 ---
 
 # debrief · 面后复盘

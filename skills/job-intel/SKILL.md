@@ -1,10 +1,10 @@
 ---
 name: job-intel
-description: Deconstructs a job description and builds interview intelligence — JD-to-evidence matching, company and product research, interviewer profiling, recruiter-vs-team discrepancy checks, and next-round question forecasting. Use when the user shares a JD or job link, names a company they will interview with, asks to analyze a position (拆解 JD / 分析这个岗位 / 查一下这家公司 / 面试官是谁 / 下一轮会考什么), or after a round when the next interviewer is known. Do NOT use for writing the answer script itself (use interview-script) or post-interview review (use debrief).
+description: Research a target job, company or interviewer and match the JD to candidate evidence for interview preparation.
 license: AGPL-3.0
 metadata:
   author: Yunyue Li
-  version: "0.1.0"
+  version: "0.1.1"
 ---
 
 # job-intel · 岗位情报

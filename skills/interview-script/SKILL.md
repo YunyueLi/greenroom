@@ -1,24 +1,24 @@
 ---
 name: interview-script
-description: Writes verbatim, speakable interview scripts (逐字稿) — spoken-style answers the candidate can read aloud, organized in modules with quick-reference anchors, with every number traced to the story bank and given with its source. Use when the user asks for interview answers, answer drafts, 逐字稿 / 答题稿 / 这题怎么答 / 帮我写自我介绍 / 准备答案, or before a specific round. Do NOT use for mock practice (use mock-interview) or for collecting raw material (use story-bank first if the bank is empty).
+description: Write or revise speakable interview answers from candidate evidence for a specific role or interview round.
 license: AGPL-3.0
 metadata:
   author: Yunyue Li
-  version: "0.1.0"
+  version: "0.1.1"
 ---
 
 # interview-script · 面试逐字稿
 
 产出 `jobs/<slug>/script.md`：一份能直接开口朗读的答题稿。与市面上「答案要点列表」的差别在三处：**口语形态**（写出来就是说出来的样子）、**防 AI 腔**（有一整套禁令，见 references/style-zh.md）、**数字可溯**（每个数字都来自经历卡、说得出出处）。
 
-## 前置：先读再写（不可跳过）
+## 写作依据
 
-按顺序读，缺哪个提醒用户先补哪步：
+读取与当前题目相关的经历、岗位与风格材料。会话中已有的材料直接复用；仅修改一题时无需重读整套工作台。缺少必要事实时说明缺口或补问，不虚构经历：
 
-1. `story-bank.md` —— 取材库（硬约束）。讲项目只从经历卡取材，按目标岗位的「按岗包装」角度讲；要用的数字经历卡里没有 → 问用户，**禁止自己编一个**，给不出准确数字就用定性说法。
+1. `story-bank.md` —— 取材库（硬约束）。讲项目只从经历卡或用户直接提供的事实取材，按目标岗位的「按岗包装」角度讲；要用的数字经历卡里没有 → 问用户，**禁止自己编一个**，给不出准确数字就用定性说法。
 2. `jobs/<slug>/intel.md` —— 出题方向。匹配表的 ⚠️/❌ 项和考题预测决定模块和题目清单；面试官档案决定语气和详略。
 3. 用户真实的说话样本（如果有：过往面试转写、debrief 里的问答复原）—— 学他的自然节奏和用词，稿子要像他说的，别像你写的。
-4. `profile.md` 的「风格偏好」节（如果有）—— 用户声明的表达风格（如"沉稳、少修辞"/"直接、带数字"），全稿按它调；与 style 文件冲突时，style 文件的禁令优先。
+4. `profile.md` 的「风格偏好」节（如果有）—— 用户声明的表达风格（如"沉稳、少修辞"/"直接、带数字"），全稿按它调；用户明确风格要求优先于 style 文件的默认写作习惯；事实真实性、数字来源与格式契约仍须保留。
 
 ## 稿件结构
 
@@ -61,7 +61,7 @@ updated: <date>
 
 ## 写作标准（核心资产）
 
-动笔前**必须完整读** `references/style-zh.md`（中文稿）或 `references/style-en.md`(English scripts)。最低纪律：
+首次写作或需要核对语体时，按目标语言读取 `references/style-zh.md` 或 `references/style-en.md` 的相关部分；本次上下文已读且要求未变时不重复加载。以下是默认风格，用户明确要求可以调整表达方式：
 
 - **姿态**：从容掌控，开口即内容。禁自我否定、禁把答题动作念出来（"我先给个定位""我分三层说"）、禁表忠心式求稳。
 - **AI 味零容忍**：「不是…而是」「恰恰」「这正是」「值得一提」「不仅…而且」等句式全禁；讲完事实就停，不接升华尾巴。但短、狠、真信的判断句要留——判断和升华的分界见 style 文件。
